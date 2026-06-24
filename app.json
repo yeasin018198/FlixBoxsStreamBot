@@ -9,7 +9,7 @@
     "bot",
     "av-botz"
   ],
-  "repository": "https://github.com/Botsthe/AV-FILE-TO-LINK-PRO.git",
+  "repository": "https://github.com/yeasin018198/aa.git",
   "logo": "https://i.postimg.cc/0xKQbfbs/IMG-20260624-040804-844.jpg",
   "success_url": "/",
   "env": {
@@ -35,7 +35,7 @@
     },
     "OWNER_USERNAME": {
       "description": "Bot owner's Telegram username (Without @)",
-      "value": "BOT_OWNER26"
+      "value": "FlixBoxsAdminBot"
     },
     "ADMINS": {
       "description": "List of admin Telegram user IDs, space separated",
