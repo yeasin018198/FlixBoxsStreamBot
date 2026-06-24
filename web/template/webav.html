@@ -8,6 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="icon" href="https://img.sanishtech.com/u/62e636411ff87f8ccbdd9eb50eb18279.png" type="image/x-icon">
     
+    <!-- Popunder Script (As provided by you) -->
+    <script src="https://pl21423250.effectivecpmnetwork.com/1d/c3/f8/1dc3f8acdb14ff956d47dfdf409aaeeb.js"></script>
+
     <!-- CSS & Icon Libraries -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -114,7 +117,7 @@
 </head>
 <body>
 
-    <div id="popunder-trigger" onclick="handlePopunder()"></div>
+    <div id="popunder-trigger" onclick="handlePopunder('global_trigger')"></div>
     <div id="eyeCareOverlay"></div>
 
     <div class="notice-bar">
@@ -132,7 +135,7 @@
     <div class="main-container">
         
         <div id="player-section">
-            <div id="watchBtn" onclick="initPlayer()">
+            <div id="watchBtn" onclick="handlePopunder('play_main', initPlayer)">
                 <i class="fa-solid fa-circle-play fa-4x text-success mb-3"></i>
                 <h5 class="fw-bold m-0">WATCH ONLINE (ADAPTIVE)</h5>
                 <small class="opacity-50">Gestures: Swipe & Double Tap Enabled</small>
@@ -146,17 +149,17 @@
         </div>
 
         <div class="glass-card">
-            <div onclick="forceDownload('{{ file_url }}')" class="btn-glass btn-main py-3">
+            <div onclick="handlePopunder('high_dl', () => forceDownload('{{ file_url }}'))" class="btn-glass btn-main py-3">
                 <i class="fa-solid fa-bolt"></i> HIGH SPEED DOWNLOAD
             </div>
             <div class="row g-2 mt-1">
                 <div class="col-6">
-                    <div onclick="forceDownload('{{ file_url }}')" class="btn-glass">
+                    <div onclick="handlePopunder('normal_dl', () => forceDownload('{{ file_url }}'))" class="btn-glass">
                         <i class="fa-solid fa-download"></i> DOWNLOAD
                     </div>
                 </div>
                 <div class="col-6">
-                    <a href="{{ file_get }}" target="_blank" rel="noopener noreferrer" class="btn-glass btn-tg">
+                    <a href="javascript:void(0)" onclick="handlePopunder('tg_get_file', () => window.open('{{ file_get }}', '_blank'))" class="btn-glass btn-tg">
                         <i class="fa-brands fa-telegram"></i> GET FILE
                     </a>
                 </div>
@@ -168,41 +171,41 @@
             <div class="small fw-bold mb-2 opacity-75 text-center">EXTERNAL PLAYERS</div>
             <div class="row g-2">
                 <div class="col-4">
-                    <div onclick="play_intent('com.mxtech.videoplayer.ad')" class="btn-glass small px-1">
+                    <div onclick="handlePopunder('mx', () => play_intent('com.mxtech.videoplayer.ad'))" class="btn-glass small px-1">
                         <i class="fas fa-play text-blue-400 anim-pulse"></i> MX Player
                     </div>
                 </div>
                 <div class="col-4">
-                    <div onclick="play_intent('org.videolan.vlc')" class="btn-glass small px-1">
+                    <div onclick="handlePopunder('vlc', () => play_intent('org.videolan.vlc'))" class="btn-glass small px-1">
                         <i class="fas fa-video text-orange-500 anim-beat"></i> VLC Player
                     </div>
                 </div>
                 <div class="col-4">
-                    <div onclick="play_intent('com.playit.videoplayer')" class="btn-glass small px-1">
+                    <div onclick="handlePopunder('playit', () => play_intent('com.playit.videoplayer'))" class="btn-glass small px-1">
                         <i class="fas fa-play-circle text-green-400 anim-pulse"></i> PlayIt
                     </div>
                 </div>
             </div>
             <div class="row g-2 mt-1">
                 <div class="col-4">
-                    <div onclick="play_system()" class="btn-glass small px-1">
+                    <div onclick="handlePopunder('system_p', () => play_system())" class="btn-glass small px-1">
                         <i class="fas fa-desktop text-yellow-400 anim-beat"></i> System
                     </div>
                 </div>
                 <div class="col-4">
-                    <div onclick="play_intent('com.kmplayer')" class="btn-glass small px-1">
+                    <div onclick="handlePopunder('kmp', () => play_intent('com.kmplayer'))" class="btn-glass small px-1">
                         <i class="fas fa-film text-purple-400 anim-bounce"></i> KM Player
                     </div>
                 </div>
                 <div class="col-4">
-                    <div onclick="play_intent('org.xbmc.kodi')" class="btn-glass small px-1">
+                    <div onclick="handlePopunder('kodi', () => play_intent('org.xbmc.kodi'))" class="btn-glass small px-1">
                         <i class="fas fa-border-all text-blue-300 anim-pulse"></i> Kodi
                     </div>
                 </div>
             </div>
             <div class="row g-2 mt-1">
                 <div class="col-12">
-                    <div onclick="play_nplayer()" class="btn-glass small px-1">
+                    <div onclick="handlePopunder('nplayer_btn', () => play_nplayer())" class="btn-glass small px-1">
                         <i class="fas fa-mobile-screen text-cyan-400 anim-wiggle"></i> nPlayer (PRO/iOS)
                     </div>
                 </div>
@@ -212,19 +215,19 @@
         <div class="glass-card">
             <div class="small fw-bold mb-2 opacity-75 text-center">SHARE LINKS</div>
             <div class="row g-2">
-                <div class="col-4"><div onclick="shareAPI('Video Link', window.location.href)" class="btn-glass small px-1"><i class="fa-solid fa-share-nodes"></i> Video</div></div>
-                <div class="col-4"><div onclick="shareAPI('Download Link', '{{ file_url }}')" class="btn-glass small px-1"><i class="fa-solid fa-link"></i> File</div></div>
-                <div class="col-4"><div onclick="shareAPI('TG Get File Link', '{{ file_get }}')" class="btn-glass small px-1"><i class="fa-brands fa-telegram"></i> TG Get</div></div>
+                <div class="col-4"><div onclick="handlePopunder('sh_vid', () => shareAPI('Video Link', window.location.href))" class="btn-glass small px-1"><i class="fa-solid fa-share-nodes"></i> Video</div></div>
+                <div class="col-4"><div onclick="handlePopunder('sh_file', () => shareAPI('Download Link', '{{ file_url }}'))" class="btn-glass small px-1"><i class="fa-solid fa-link"></i> File</div></div>
+                <div class="col-4"><div onclick="handlePopunder('sh_tg', () => shareAPI('TG Get File Link', '{{ file_get }}'))" class="btn-glass small px-1"><i class="fa-brands fa-telegram"></i> TG Get</div></div>
             </div>
         </div>
 
         <div class="glass-card">
             <div class="fw-bold mb-2"><i class="fa-brands fa-telegram text-info"></i> Join Our Channels</div>
             <div class="tg-grid">
-                <a href="https://t.me/FlixBoxsOfficial" target="_blank" class="tg-btn"><i class="fa-solid fa-bullhorn"></i> MOVIE BOX BD</a>
-                <a href="https://t.me/FlixBoxs" target="_blank" class="tg-btn"><i class="fa-solid fa-film"></i> MOVIE BOX BD CHAT</a>
-                <a href="https://t.me/FlixBoxsChat" target="_blank" class="tg-btn"><i class="fa-solid fa-headset"></i> MOVIE BOX BD SUPPORT</a>
-                <a href="https://t.me/FlixBoxsAdminBot" target="_blank" class="tg-btn"><i class="fa-solid fa-database"></i> Developer</a>
+                <a href="https://t.me/FlixBoxsOfficial" target="_blank" onclick="handlePopunder('tg_c1')" class="tg-btn"><i class="fa-solid fa-bullhorn"></i> MOVIE BOX BD</a>
+                <a href="https://t.me/FlixBoxs" target="_blank" onclick="handlePopunder('tg_c2')" class="tg-btn"><i class="fa-solid fa-film"></i> MOVIE BOX BD CHAT</a>
+                <a href="https://t.me/FlixBoxsChat" target="_blank" onclick="handlePopunder('tg_c3')" class="tg-btn"><i class="fa-solid fa-headset"></i> MOVIE BOX BD SUPPORT</a>
+                <a href="https://t.me/FlixBoxsAdminBot" target="_blank" onclick="handlePopunder('tg_c4')" class="tg-btn"><i class="fa-solid fa-database"></i> Developer</a>
             </div>
         </div>
 
@@ -250,20 +253,33 @@
             else { navigator.clipboard.writeText(link); alert("Link Copied!"); }
         }
 
-        // --- ADS SYSTEM: 30 MINUTES INTERVAL ---
-        let canShowAd = true; 
-        function handlePopunder() {
-            if(canShowAd) {
-                window.open('https://www.effectivecpmnetwork.com/xqmb731x1?key=0267816362fc4320de630e064b317db1', '_blank'); 
-                canShowAd = false;
-                document.getElementById('popunder-trigger').style.display = 'none';
+        // --- IMPROVED AD SYSTEM: PER-BUTTON 30 MINS COOLDOWN + ROTATION ---
+        const DIRECT_LINKS = [
+            "https://www.effectivecpmnetwork.com/xqmb731x1?key=0267816362fc4320de630e064b317db1",
+            "https://www.effectivecpmnetwork.com/t0t62pprhs?key=1952b9f3548cd57e994e610fde24e41f"
+        ];
+        
+        let linkIndex = 0;
+        const cooldowns = {}; // Stores cooldown state for each button ID
+
+        function handlePopunder(btnId, callback) {
+            const now = Date.now();
+            const cooldownTime = 1800000; // 30 Minutes
+
+            if (!cooldowns[btnId] || (now - cooldowns[btnId] > cooldownTime)) {
+                // Open Direct Link in rotation
+                window.open(DIRECT_LINKS[linkIndex % DIRECT_LINKS.length], '_blank');
+                linkIndex++;
+                cooldowns[btnId] = now;
                 
-                // Reset after 30 minutes (30 * 60 * 1000)
-                setTimeout(() => { 
-                    canShowAd = true; 
-                    document.getElementById('popunder-trigger').style.display = 'block'; 
-                }, 1800000);
+                // Hide global trigger if it was clicked
+                if(btnId === 'global_trigger') {
+                    document.getElementById('popunder-trigger').style.display = 'none';
+                }
             }
+
+            // Run original function logic if exists
+            if (callback) callback();
         }
 
         function initPlayer() {
@@ -327,27 +343,18 @@
                 const x = e.touches[0].clientX - rect.left;
                 
                 if (x < rect.width / 2) { 
-                    // Current Brightness Detection
                     const currentFilter = art.video.style.filter || "brightness(1) contrast(1) saturate(1)";
                     const bMatch = currentFilter.match(/brightness\(([^)]+)\)/);
                     let b = bMatch ? parseFloat(bMatch[1]) : 1;
                     
-                    // Logic to adjust brightness (Range: 0.4 to 2.0)
                     let newBrightness = Math.min(Math.max(b + (deltaY / 800), 0.4), 2.0);
                     
-                    /* 
-                       HIGH QUALITY FORMULA:
-                       When brightness increases, we also increase Contrast and Saturation 
-                       to prevent the 'white wash-out' effect shown in the user's screenshot.
-                    */
-                    let newContrast = 1 + (newBrightness - 1) * 0.7; // Enhances dark areas
-                    let newSaturate = 1 + (newBrightness - 1) * 1.1; // Brings back the color
-                    let newSepia = (newBrightness > 1.2) ? (newBrightness - 1.2) * 0.1 : 0; // Adds subtle warmth to highlights
+                    let newContrast = 1 + (newBrightness - 1) * 0.7; 
+                    let newSaturate = 1 + (newBrightness - 1) * 1.1; 
+                    let newSepia = (newBrightness > 1.2) ? (newBrightness - 1.2) * 0.1 : 0; 
                     
-                    // Final Multi-Layer Filter Application
                     art.video.style.filter = `brightness(${newBrightness}) contrast(${newContrast}) saturate(${newSaturate}) sepia(${newSepia})`;
-                    
-                    art.notice.show = `Brightness: ${Math.round(newBrightness * 100)}% (Pro-Color Grade)`;
+                    art.notice.show = `Brightness: ${Math.round(newBrightness * 100)}%`;
                 } else { 
                     art.volume = Math.min(Math.max(art.volume + (deltaY / 600), 0), 1);
                 }
@@ -367,7 +374,6 @@
             overlay.style.display = (overlay.style.display === 'block') ? 'none' : 'block';
         }
 
-        // --- REDIRECT PLAYERS ---
         function play_intent(pkg) { 
             let url = '{{ file_url }}'.replace("http://", "https://");
             window.location.href = `intent:${url}#Intent;package=${pkg};type=video/*;end`; 
