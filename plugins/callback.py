@@ -41,17 +41,20 @@ async def cb_handler(client: Client, query: CallbackQuery):
         await query.message.delete()
     elif query.data == "about":
         buttons = [[
-            InlineKeyboardButton('💻 sᴏᴜʀᴄᴇ ᴄᴏᴅᴇ', url='https://github.com/Botsthe/AV-FILE-TO-LINK-PRO.git')
+            InlineKeyboardButton('💻 sᴏᴜʀᴄᴇ ᴄᴏᴅᴇ', url='https://t.me/flixboxs')
         ],[
             InlineKeyboardButton('• ʜᴏᴍᴇ •', callback_data='start'),
             InlineKeyboardButton('• ᴄʟᴏsᴇ •', callback_data='close_data')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
-        await query.message.edit_text(
-            text=script.ABOUT_TXT.format(temp.B_NAME, temp.B_NAME, get_readable_time(time.time() - StartTime), __version__),
-            reply_markup=reply_markup,
-            parse_mode=enums.ParseMode.HTML
-        )
+        try:
+            await query.message.edit_text(
+                text=script.ABOUT_TXT.format(temp.B_NAME, temp.B_NAME, get_readable_time(time.time() - StartTime), __version__),
+                reply_markup=reply_markup,
+                parse_mode=enums.ParseMode.HTML
+            )
+        except MessageNotModified:
+            pass
     
     elif query.data == "start":
         buttons = [[
@@ -71,11 +74,14 @@ async def cb_handler(client: Client, query: CallbackQuery):
             ]
         ]
         reply_markup = InlineKeyboardMarkup(buttons)
-        await query.message.edit_text(
-            text=script.START_TXT.format(query.from_user.mention, temp.U_NAME),
-            reply_markup=reply_markup,
-            parse_mode=enums.ParseMode.HTML
-        )
+        try:
+            await query.message.edit_text(
+                text=script.START_TXT.format(query.from_user.mention, temp.U_NAME),
+                reply_markup=reply_markup,
+                parse_mode=enums.ParseMode.HTML
+            )
+        except MessageNotModified:
+            pass
         
     elif query.data == "help":
         buttons = [[
@@ -85,11 +91,14 @@ async def cb_handler(client: Client, query: CallbackQuery):
             InlineKeyboardButton('• ᴄʟᴏsᴇ •', callback_data='close_data')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
-        await query.message.edit_text(
-            text=script.HELP_TXT,
-            reply_markup=reply_markup,
-            parse_mode=enums.ParseMode.HTML
-        )  
+        try:
+            await query.message.edit_text(
+                text=script.HELP_TXT,
+                reply_markup=reply_markup,
+                parse_mode=enums.ParseMode.HTML
+            )  
+        except MessageNotModified:
+            pass
 
     elif query.data == "admincmd":
         if not query.from_user.id in ADMINS:
@@ -98,11 +107,14 @@ async def cb_handler(client: Client, query: CallbackQuery):
             InlineKeyboardButton('• ʜᴏᴍᴇ •', callback_data='start')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
-        await query.message.edit_text(
-            text=script.ADMIN_CMD_TXT,
-            reply_markup=reply_markup,
-            parse_mode=enums.ParseMode.HTML,
-       )
+        try:
+            await query.message.edit_text(
+                text=script.ADMIN_CMD_TXT,
+                reply_markup=reply_markup,
+                parse_mode=enums.ParseMode.HTML,
+           )
+        except MessageNotModified:
+            pass
 
     elif query.data == "premium_info":
         buttons = [[
@@ -111,11 +123,14 @@ async def cb_handler(client: Client, query: CallbackQuery):
             InlineKeyboardButton('⋞ ʙᴀᴄᴋ ᴛᴏ ʜᴏᴍᴇ ', callback_data='start')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
-        await query.message.edit_text(
-            text=script.PREMIUM_TEXT.format(query.from_user.mention),
-            reply_markup=reply_markup,
-            parse_mode=enums.ParseMode.HTML
-        )
+        try:
+            await query.message.edit_text(
+                text=script.PREMIUM_TEXT.format(query.from_user.mention),
+                reply_markup=reply_markup,
+                parse_mode=enums.ParseMode.HTML
+            )
+        except MessageNotModified:
+            pass
 
     elif query.data == "check_plan":
         buttons = [
@@ -129,11 +144,14 @@ async def cb_handler(client: Client, query: CallbackQuery):
             ]
         ]
         reply_markup = InlineKeyboardMarkup(buttons)
-        await query.message.edit_text(
-            text=script.CHECK_PLAN_TXT.format(query.from_user.mention),
-            reply_markup=reply_markup,
-            parse_mode=enums.ParseMode.HTML,
-        )
+        try:
+            await query.message.edit_text(
+                text=script.CHECK_PLAN_TXT.format(query.from_user.mention),
+                reply_markup=reply_markup,
+                parse_mode=enums.ParseMode.HTML,
+            )
+        except MessageNotModified:
+            pass
 
     elif query.data == "seeplans":
         btn = [[
@@ -163,12 +181,15 @@ async def cb_handler(client: Client, query: CallbackQuery):
             InlineKeyboardButton('⋞ ʙᴀᴄᴋ ᴛᴏ ʜᴏᴍᴇ ', callback_data='start')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
-        await query.message.edit_text(
-            text=script.REFER_TEXT.format(query.from_user.mention, points, ref_link),
-            reply_markup=reply_markup,
-            disable_web_page_preview=True,
-            parse_mode=enums.ParseMode.HTML
-        )
+        try:
+            await query.message.edit_text(
+                text=script.REFER_TEXT.format(query.from_user.mention, points, ref_link),
+                reply_markup=reply_markup,
+                disable_web_page_preview=True,
+                parse_mode=enums.ParseMode.HTML
+            )
+        except MessageNotModified:
+            pass
 
     elif query.data == "ref_point":
         points = await db.get_refer_points(query.from_user.id)
@@ -189,6 +210,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 InlineKeyboardButton('❌ ᴄʟᴏsᴇ ❌', callback_data='close_data')
             ]]
             await query.edit_message_reply_markup(InlineKeyboardMarkup(btn))
+        except MessageNotModified:
+            pass
         except Exception as e:
             await query.answer(f"Error: {e}", show_alert=True)
 
@@ -213,10 +236,13 @@ async def cb_handler(client: Client, query: CallbackQuery):
             nav_btns.append(InlineKeyboardButton("➡️ Nᴇxᴛ", callback_data=f"filespage_{page + 1}"))
         nav_btns.append(InlineKeyboardButton("❌ ᴄʟᴏsᴇ ❌", callback_data="close_data"))
         btns.append(nav_btns)
-        await query.message.edit_text(
-            f"📁 Tᴏᴛᴀʟ ғɪʟᴇꜱ: {len(files)} | Pᴀɢᴇ {page}/{total_pages}",
-            reply_markup=InlineKeyboardMarkup(btns)
-        )
+        try:
+            await query.message.edit_text(
+                f"📁 Tᴏᴛᴀʟ ғɪʟᴇꜱ: {len(files)} | Pᴀɢᴇ {page}/{total_pages}",
+                reply_markup=InlineKeyboardMarkup(btns)
+            )
+        except MessageNotModified:
+            pass
         return await query.answer()
 
     elif query.data.startswith("delfilespage_"):
@@ -240,10 +266,13 @@ async def cb_handler(client: Client, query: CallbackQuery):
             nav_btns.append(InlineKeyboardButton("➡️ Nᴇxᴛ", callback_data=f"delfilespage_{page + 1}"))
         nav_btns.append(InlineKeyboardButton("❌ ᴄʟᴏsᴇ ❌", callback_data="close_data"))
         btns.append(nav_btns)
-        await query.message.edit_text(
-            f"📁 Tᴏᴛᴀʟ ғɪʟᴇꜱ: {len(files)} | Pᴀɢᴇ {page}/{total_pages}",
-            reply_markup=InlineKeyboardMarkup(btns)
-        )
+        try:
+            await query.message.edit_text(
+                f"📁 Tᴏᴛᴀʟ ғɪʟᴇꜱ: {len(files)} | Pᴀɢᴇ {page}/{total_pages}",
+                reply_markup=InlineKeyboardMarkup(btns)
+            )
+        except MessageNotModified:
+            pass
         return await query.answer()
 
     elif query.data.startswith("sendfile_"):
@@ -295,4 +324,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         except:
             pass
         await query.answer("✅ Fɪʟᴇ ᴅᴇʟᴇᴛᴇᴅ ꜱᴜᴄᴄᴇꜱꜱғᴜʟʟʏ!", show_alert=True)
-        await query.message.edit_text("🗑️ Fɪʟᴇ ʜᴀꜱ ʙᴇᴇɴ ᴅᴇʟᴇᴛᴇᴅ ꜱᴜᴄᴄᴇꜱғᴜʟʟʏ.")
+        try:
+            await query.message.edit_text("🗑️ Fɪʟᴇ ʜᴀꜱ ʙᴇᴇɴ ᴅᴇʟᴇᴛᴇᴅ ꜱᴜᴄᴄᴇꜱғᴜʟʟʏ.")
+        except MessageNotModified:
+            pass
