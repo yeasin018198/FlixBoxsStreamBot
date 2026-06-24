@@ -25,7 +25,8 @@ API_HASH = environ.get('API_HASH', '8b4fd9ef578af114502feeafa2d31938')
 BOT_TOKEN = environ.get('BOT_TOKEN', '8714836567:AAEUM36b-_Nri1HFjmAa0Yv1r_A_TPxI0eU')
 
 # Admin Settings
-ADMINS = [int(x) for x in environ.get('ADMINS', '7120801813').split()]
+# Fix: re.split allows space and comma separated unlimited IDs
+ADMINS = [int(x.strip()) for x in re.split(r'[,\s]+', environ.get('ADMINS', '7120801813')) if x.strip()]
 OWNER_USERNAME = environ.get("OWNER_USERNAME", 'ya_movies')
 
 # =========================================================
@@ -48,7 +49,8 @@ SUPPORT_GROUP = int(environ.get("SUPPORT_GROUP", "-1004498638459"))
 
 # Auth Channels (Safe Parsing)
 auth_channel_str = environ.get("AUTH_CHANNEL", "-1004498638459")
-AUTH_CHANNEL = [int(x) for x in auth_channel_str.split()] if auth_channel_str else []
+# Fix: Support for multiple auth channels with comma or space
+AUTH_CHANNEL = [int(x.strip()) for x in re.split(r'[,\s]+', auth_channel_str) if x.strip()] if auth_channel_str else []
 
 # =========================================================
 # 🔗 LINKS & URLS
