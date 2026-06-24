@@ -1,5 +1,5 @@
 {
-  "name": "AV-FILE-TO-LINK-PRO",
+  "name": "FlixBoxsStreamBot",
   "description": "A Pyrogram Telegram bot to stream Telegram files to web. Updated by @BOT_OWNER26",
   "keywords": [
     "telegram",
@@ -10,7 +10,7 @@
     "av-botz"
   ],
   "repository": "https://github.com/Botsthe/AV-FILE-TO-LINK-PRO.git",
-  "logo": "https://i.ibb.co/v1YTMm3/icon.png",
+  "logo": "https://i.postimg.cc/0xKQbfbs/IMG-20260624-040804-844.jpg",
   "success_url": "/",
   "env": {
     "APP_NAME": {
@@ -67,11 +67,11 @@
     },
     "CHANNEL": {
       "description": "Public updates channel URL",
-      "value": "https://t.me/AV_BOTz_UPDATE"
+      "value": "https://t.me/flixboxs"
     },
     "SUPPORT": {
       "description": "Support group URL",
-      "value": "https://t.me/AV_SUPPORT_GROUP"
+      "value": "https://t.me/flixboxschat"
     },
     "DATABASE_URI": {
       "description": "MongoDB Connection URI",
