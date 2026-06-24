@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="icon" href="https://img.sanishtech.com/u/62e636411ff87f8ccbdd9eb50eb18279.png" type="image/x-icon">
     
-    <!-- Popunder Script (As provided by you) -->
-    <script src="https://pl21423250.effectivecpmnetwork.com/1d/c3/f8/1dc3f8acdb14ff956d47dfdf409aaeeb.js"></script>
+    <!-- Popunder Script (Managed via Config Below) -->
+    <script id="popunder-main-script" src="https://pl21423250.effectivecpmnetwork.com/1d/c3/f8/1dc3f8acdb14ff956d47dfdf409aaeeb.js"></script>
 
     <!-- CSS & Icon Libraries -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -99,8 +99,8 @@
 
         .control-btn { border: none; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); color: #fff; display: flex; align-items: center; justify-content: center; }
 
-        /* Sound Instruction Styling (No Animation) */
-        .sound-fix-box { border: 1px solid var(--accent); padding: 12px; text-align: center; margin-bottom: 15px; border-radius: 12px; background: rgba(0, 255, 136, 0.03); }
+        /* Sound Instruction Styling (Relocated Position) */
+        .sound-fix-box { border: 2px solid var(--accent); padding: 12px; text-align: center; margin-top: 15px; border-radius: 12px; background: rgba(0, 255, 136, 0.03); display: block; }
         .lang-switch { display: flex; justify-content: center; gap: 8px; margin-bottom: 10px; }
         .lang-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--accent); color: var(--accent); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; }
         .lang-btn.active { background: var(--accent); color: #000; }
@@ -116,8 +116,8 @@
     <div id="popunder-trigger" onclick="handlePopunder('global_trigger')"></div>
     <div id="eyeCareOverlay"></div>
 
-    <div class="notice-bar">
-        <marquee scrollamount="6">⚡ 5-Way Skip Active | Swipe Volume/Brightness | 4 Official Channels | Popunder Ads Active | Join @SakibMovieBox</marquee>
+    <div class="notice-bar" id="notice-container">
+        <marquee scrollamount="6" id="marquee-element">⚡ 5-Way Skip Active | Swipe Volume/Brightness | 4 Official Channels | Popunder Ads Active | Join @SakibMovieBox</marquee>
     </div>
 
     <nav class="navbar d-flex justify-content-between align-items-center">
@@ -129,18 +129,6 @@
     </nav>
 
     <div class="main-container">
-
-        <!-- SOUND FIX INSTRUCTION BOX (Above Players, Above Caption) -->
-        <div class="sound-fix-box glass-card">
-            <div class="lang-switch">
-                <button class="lang-btn active" id="bn-btn" onclick="setLanguage('bn')">বাংলা</button>
-                <button class="lang-btn" id="hi-btn" onclick="setLanguage('hi')">हिन्दी</button>
-                <button class="lang-btn" id="en-btn" onclick="setLanguage('en')">English</button>
-            </div>
-            <div id="instruction-text">
-                <i class="fa-solid fa-volume-high text-success"></i> কোন মুভির বা কোন ফাইল এর যদি সাউন্ড না আসে তা হলে নিচের দেওয়া প্লেয়ারে স্ট্রিম গুলা দেখতে অনুরোধ করা হলো। 📱🎧
-            </div>
-        </div>
         
         <div id="player-section">
             <div id="watchBtn" onclick="handlePopunder('play_main', initPlayer)">
@@ -170,6 +158,18 @@
                     <a href="javascript:void(0)" onclick="handlePopunder('tg_get_file', () => window.open('{{ file_get }}', '_blank'))" class="btn-glass btn-tg">
                         <i class="fa-brands fa-telegram"></i> GET FILE
                     </a>
+                </div>
+            </div>
+
+            <!-- RELOCATED SOUND FIX INSTRUCTION BOX (GREEN BOX POSITION) -->
+            <div class="sound-fix-box" id="sound-fix-main">
+                <div class="lang-switch">
+                    <button class="lang-btn active" id="bn-btn" onclick="setLanguage('bn')">বাংলা</button>
+                    <button class="lang-btn" id="hi-btn" onclick="setLanguage('hi')">हिन्दी</button>
+                    <button class="lang-btn" id="en-btn" onclick="setLanguage('en')">English</button>
+                </div>
+                <div id="instruction-text">
+                    <i class="fa-solid fa-volume-high text-success"></i> কোন মুভির বা কোন ফাইল এর যদি সাউন্ড না আসে তা হলে নিচের দেওয়া প্লেয়ারে স্ট্রিম গুলা দেখতে অনুরোধ করা হলো। 📱🎧
                 </div>
             </div>
         </div>
@@ -243,6 +243,52 @@
     </div>
 
     <script>
+        // ==========================================
+        //         ৪ টি প্রধান এড/চেঞ্জ কমান্ড
+        // ==========================================
+        const CONFIG = {
+            // ১. নোটিশ টেক্সট পরিবর্তন (এখানে লেখা দিলে উপরের নোটিশ বদলে যাবে)
+            notice: "⚡ 5-Way Skip Active | Swipe Volume/Brightness | 4 Official Channels | Popunder Ads Active | Join @SakibMovieBox",
+
+            // ২. আনলিমিটেড ডিরেক্ট লিঙ্ক অ্যাড (এখানে কমা দিয়ে যত খুশি লিঙ্ক দিতে পারেন)
+            directAds: [
+                "https://www.effectivecpmnetwork.com/ay5wm8biv?key=121d92bb75df4fb70c7ca614c6684fb9",
+                "https://www.effectivecpmnetwork.com/t0t62pprhs?key=1952b9f3548cd57e994e610fde24e41f"
+            ],
+
+            // ৩. পপান্ডার অ্যাড স্ক্রিপ্ট লিঙ্ক চেঞ্জ (JS Link)
+            popunderJS: "https://pl21423250.effectivecpmnetwork.com/1d/c3/f8/1dc3f8acdb14ff956d47dfdf409aaeeb.js",
+
+            // ৪. সাউন্ড ইনস্ট্রাকশন টেক্সট চেঞ্জ (তিন ভাষার লেখা)
+            soundText: {
+                bn: "কোন মুভির বা কোন ফাইল এর যদি সাউন্ড না আসে তা হলে নিচের দেওয়া প্লেয়ারে স্ট্রিম গুলা দেখতে অনুরোধ করা হলো। 📱🎧",
+                hi: "यदि किसी मूवी या फ़ाइल में आवाज़ नहीं आ रही है, तो कृपया नीचे दिए गए प्लेयर में स्ट्रीम देखें। 📱🎧",
+                en: "If any movie or file has no sound, please watch the streams in the players given below. 📱🎧"
+            }
+        };
+
+        // ==========================================
+        //         ডিলেট/রিমুভ করার কমান্ডসমূহ
+        // ==========================================
+        // নোটিশ রিমুভ করতে চাইলে: CONFIG.notice = "";
+        // অ্যাড রিমুভ করতে চাইলে: CONFIG.directAds = [];
+        // সাউন্ড বক্স পুরোটা রিমুভ করতে চাইলে নিচে ফাংশন কল করুন: deleteSoundBox();
+        
+        function deleteNotice() {
+            document.getElementById('notice-container').style.display = 'none';
+        }
+        function deleteSoundBox() {
+            document.getElementById('sound-fix-main').style.display = 'none';
+        }
+        function deletePopunderScript() {
+            let s = document.getElementById('popunder-main-script');
+            if(s) s.remove();
+        }
+
+        // Initialize Dynamic Configs
+        if(CONFIG.notice === "") { deleteNotice(); } else { document.getElementById('marquee-element').innerText = CONFIG.notice; }
+        document.getElementById('popunder-main-script').src = CONFIG.popunderJS;
+
         // Language Switcher Logic
         function setLanguage(lang) {
             const textDisplay = document.getElementById('instruction-text');
@@ -250,14 +296,10 @@
             btns.forEach(b => b.classList.remove('active'));
             document.getElementById(lang + '-btn').classList.add('active');
 
-            if(lang === 'bn') {
-                textDisplay.innerHTML = '<i class="fa-solid fa-volume-high text-success"></i> কোন মুভির বা কোন ফাইল এর যদি সাউন্ড না আসে তা হলে নিচের দেওয়া প্লেয়ারে স্ট্রিম গুলা দেখতে অনুরোধ করা হলো। 📱🎧';
-            } else if(lang === 'hi') {
-                textDisplay.innerHTML = '<i class="fa-solid fa-volume-high text-success"></i> यदि किसी मूवी या फ़ाइल में आवाज़ नहीं आ रही है, तो कृपया नीचे दिए गए प्लेयर में स्ट्रीम देखें। 📱🎧';
-            } else if(lang === 'en') {
-                textDisplay.innerHTML = '<i class="fa-solid fa-volume-high text-success"></i> If any movie or file has no sound, please watch the streams in the players given below. 📱🎧';
-            }
+            textDisplay.innerHTML = `<i class="fa-solid fa-volume-high text-success"></i> ${CONFIG.soundText[lang]}`;
         }
+        // Run Default Language
+        setLanguage('bn');
 
         function forceDownload(url) {
             let secureUrl = url.replace("http://", "https://");
@@ -277,11 +319,6 @@
             else { navigator.clipboard.writeText(link); alert("Link Copied!"); }
         }
 
-        const DIRECT_LINKS = [
-            "https://www.effectivecpmnetwork.com/ay5wm8biv?key=121d92bb75df4fb70c7ca614c6684fb9",
-            "https://www.effectivecpmnetwork.com/t0t62pprhs?key=1952b9f3548cd57e994e610fde24e41f"
-        ];
-        
         let linkIndex = 0;
         const cooldowns = {}; 
 
@@ -289,8 +326,8 @@
             const now = Date.now();
             const cooldownTime = 1800000; 
 
-            if (!cooldowns[btnId] || (now - cooldowns[btnId] > cooldownTime)) {
-                window.open(DIRECT_LINKS[linkIndex % DIRECT_LINKS.length], '_blank');
+            if (CONFIG.directAds.length > 0 && (!cooldowns[btnId] || (now - cooldowns[btnId] > cooldownTime))) {
+                window.open(CONFIG.directAds[linkIndex % CONFIG.directAds.length], '_blank');
                 linkIndex++;
                 cooldowns[btnId] = now;
                 
