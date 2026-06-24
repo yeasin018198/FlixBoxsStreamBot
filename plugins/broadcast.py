@@ -62,6 +62,10 @@ async def process_broadcast(bot, message, is_pin: bool):
     if lock.locked():
         return await message.reply('Currently broadcast processing, Wait for complete.')
 
+    # চেক করা হচ্ছে কোনো মেসেজে রিপ্লাই দেওয়া হয়েছে কিনা
+    if not message.reply_to_message:
+        return await message.reply_text("<b>Error:</b> Please reply to a message (text, photo, video, etc.) to start broadcast!")
+
     await bot.send_message(chat_id=message.chat.id, text="Broadcast started...", reply_markup=ReplyKeyboardRemove())
 
     users = await db.get_all_users()
@@ -96,13 +100,16 @@ async def process_broadcast(bot, message, is_pin: bool):
 
             if done % 20 == 0:
                 btn = [[InlineKeyboardButton('CANCEL', callback_data='broadcast_cancel#users')]]
-                await b_sts.edit(
-                    f"📢 Users broadcast in progress...\n\n"
-                    f"Total Users: <code>{total_users}</code>\n"
-                    f"Completed: <code>{done}</code>\n"
-                    f"Success: <code>{success}</code>",
-                    reply_markup=InlineKeyboardMarkup(btn)
-                )
+                try:
+                    await b_sts.edit(
+                        f"📢 Users broadcast in progress...\n\n"
+                        f"Total Users: <code>{total_users}</code>\n"
+                        f"Completed: <code>{done}</code>\n"
+                        f"Success: <code>{success}</code>",
+                        reply_markup=InlineKeyboardMarkup(btn)
+                    )
+                except:
+                    pass
 
         time_taken = get_readable_time(time.time() - start_time)
         await b_sts.edit(
@@ -113,12 +120,25 @@ async def process_broadcast(bot, message, is_pin: bool):
             f"Failed: <code>{failed}</code>"
         )
 
-# Command: /broadcast (only send)
-@Client.on_message(filters.command("broadcast") & filters.user(ADMINS) & filters.reply)
+# Command: /broadcast (fixed logic)
+@Client.on_message(filters.command("broadcast") & filters.user(ADMINS))
 async def broadcast_only(bot, message):
+    # যদি এডমিন রিপ্লাই না দিয়ে কমান্ড দেয়, তবে তাকে তথ্য দেওয়া হবে
+    if not message.reply_to_message:
+        await message.reply_text("<b>Usage:</b> Reply to any message with /broadcast to send it to all users.")
+        return
     await process_broadcast(bot, message, is_pin=False)
 
-# Command: /pin_broadcast (send + pin)
-@Client.on_message(filters.command("pin_broadcast") & filters.user(ADMINS) & filters.reply)
+# Command: /pin_broadcast (fixed logic)
+@Client.on_message(filters.command("pin_broadcast") & filters.user(ADMINS))
 async def broadcast_with_pin(bot, message):
+    # যদি এডমিন রিপ্লাই না দিয়ে কমান্ড দেয়, তবে তাকে তথ্য দেওয়া হবে
+    if not message.reply_to_message:
+        await message.reply_text("<b>Usage:</b> Reply to any message with /pin_broadcast to send and pin it for all users.")
+        return
     await process_broadcast(bot, message, is_pin=True)
+
+# অতিরিক্ত ফির্চার: নন-এডমিন কেউ ট্রাই করলে ওয়ার্নিং দিবে
+@Client.on_message(filters.command(["broadcast", "pin_broadcast"]) & ~filters.user(ADMINS))
+async def unauthorized_broadcast(bot, message):
+    await message.reply_text("<b>Access Denied!</b>\nOnly authorized admins can use this command.")
