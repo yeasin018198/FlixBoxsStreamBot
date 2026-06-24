@@ -1,5 +1,5 @@
 type: web
-name: av-file-to-link-pro
+name: FlixBoxsStreamBot
 project: av-botz
 lang: docker
 docker:
