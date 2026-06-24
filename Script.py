@@ -248,7 +248,7 @@ class script(object):
 💸 <b>ᴜᴘɪ ɪᴅ:</b> <code>.......</code> (ᴛᴀᴘ ᴛᴏ ᴄᴏᴘʏ)
 
 📸 <i>sᴇɴᴅ ᴘᴀʏᴍᴇɴᴛ sᴄʀᴇᴇɴsʜᴏᴛ ᴛᴏ ᴀᴅᴍɪɴ ꜰᴏʀ ᴀᴄᴛɪᴠᴀᴛɪᴏɴ.</i>
-🏷️ <a href='https://t.me/FlixBoxsAdminBot'>ᴄʜᴇᴄᴋ ᴘʀᴇᴍɪᴜᴍ ᴘʀᴏᴏꜰs</a>"""
+🏷️ <a href='https://t.me/AHSakib1'>ᴄʜᴇᴄᴋ ᴘʀᴇᴍɪᴜᴍ ᴘʀᴏᴏꜰs</a>"""
     
     PREMIUM_TEXT = """<b>👑 <u>ᴘʀᴇᴍɪᴜᴍ sᴛᴀᴛᴜs</u></b>
 
