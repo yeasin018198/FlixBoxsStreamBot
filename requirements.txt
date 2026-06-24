@@ -1,0 +1,14 @@
+Pyrofork==2.3.48
+tgcrypto
+pymongo[srv]==3.12
+aiohttp
+python-dotenv
+motor
+aiofiles
+dnspython
+apscheduler
+requests
+psutil
+jinja2
+pytz
+shortzy

@@ -1,0 +1,185 @@
+{
+  "name": "AV-FILE-TO-LINK-PRO",
+  "description": "A Pyrogram Telegram bot to stream Telegram files to web. Updated by @BOT_OWNER26",
+  "keywords": [
+    "telegram",
+    "stream",
+    "web",
+    "pyrogram",
+    "bot",
+    "av-botz"
+  ],
+  "repository": "https://github.com/Botsthe/AV-FILE-TO-LINK-PRO.git",
+  "logo": "https://i.ibb.co/v1YTMm3/icon.png",
+  "success_url": "/",
+  "env": {
+    "APP_NAME": {
+      "description": "Heroku app name (Required for Heroku)",
+      "required": false
+    },
+    "API_ID": {
+      "description": "Get this value from https://my.telegram.org",
+      "required": true
+    },
+    "API_HASH": {
+      "description": "Get this value from https://my.telegram.org",
+      "required": true
+    },
+    "BOT_TOKEN": {
+      "description": "Get this from @BotFather",
+      "required": true
+    },
+    "SESSION": {
+      "description": "Pyrogram session string or name",
+      "value": "Webavbot"
+    },
+    "OWNER_USERNAME": {
+      "description": "Bot owner's Telegram username (Without @)",
+      "value": "BOT_OWNER26"
+    },
+    "ADMINS": {
+      "description": "List of admin Telegram user IDs, space separated",
+      "required": true
+    },
+    "BIN_CHANNEL": {
+      "description": "File store channel ID (Starts with -100)",
+      "required": true
+    },
+    "LOG_CHANNEL": {
+      "description": "Log channel ID (Starts with -100)",
+      "required": true
+    },
+    "PREMIUM_LOGS": {
+      "description": "Premium Logs Channel ID",
+      "required": false
+    },
+    "VERIFIED_LOG": {
+      "description": "Verified User Logs Channel ID",
+      "required": false
+    },
+    "SUPPORT_GROUP": {
+      "description": "Support Group ID",
+      "required": false
+    },
+    "AUTH_CHANNEL": {
+      "description": "Force subscribe channels ID (Space separated, starts with -100)",
+      "required": false
+    },
+    "CHANNEL": {
+      "description": "Public updates channel URL",
+      "value": "https://t.me/AV_BOTz_UPDATE"
+    },
+    "SUPPORT": {
+      "description": "Support group URL",
+      "value": "https://t.me/AV_SUPPORT_GROUP"
+    },
+    "DATABASE_URI": {
+      "description": "MongoDB Connection URI",
+      "required": true
+    },
+    "DATABASE_NAME": {
+      "description": "MongoDB Database Name",
+      "value": "avbotz"
+    },
+    "IS_VERIFY": {
+      "description": "Enable 1st Verification (True/False)",
+      "value": "True"
+    },
+    "IS_SECOND_VERIFY": {
+      "description": "Enable 2nd Verification (True/False)",
+      "value": "True"
+    },
+    "IS_SHORTLINK": {
+      "description": "Enable Shortener (True/False)",
+      "value": "True"
+    },
+    "TUTORIAL_LINK_1": {
+      "description": "Video Tutorial Link for 1st Verification",
+      "required": false
+    },
+    "TUTORIAL_LINK_2": {
+      "description": "Video Tutorial Link for 2nd Verification",
+      "required": false
+    },
+    "SHORTLINK_URL": {
+      "description": "1st Shortener Domain (e.g. mdiskshortner.link)",
+      "required": false
+    },
+    "SHORTLINK_API": {
+      "description": "1st Shortener API Key",
+      "required": false
+    },
+    "SHORTENER_WEBSITE2": {
+      "description": "2nd Shortener Domain",
+      "required": false
+    },
+    "SHORTENER_API2": {
+      "description": "2nd Shortener API Key",
+      "required": false
+    },
+    "VERIFY_EXPIRE": {
+      "description": "Verification Expiry Time (in Seconds/Minutes)",
+      "value": "60"
+    },
+    "FSUB": {
+      "description": "Enable Force Subscribe (True/False)",
+      "value": "False"
+    },
+    "ENABLE_LIMIT": {
+      "description": "Enable File Limit per user (True/False)",
+      "value": "True"
+    },
+    "MAINTENANCE_MODE": {
+      "description": "Enable Maintenance Mode (True/False)",
+      "value": "False"
+    },
+    "MAX_FILES": {
+      "description": "Max files allowed per user",
+      "value": "10"
+    },
+    "PING_INTERVAL": {
+      "description": "Ping interval (seconds)",
+      "value": "1200"
+    },
+    "URL": {
+      "description": "Your App URL (Optional, auto-generated if empty)",
+      "required": false
+    },
+    "PORT": {
+      "description": "Port number for web server",
+      "value": "2626"
+    },
+    "WORKERS": {
+      "description": "Number of Async Workers",
+      "value": "4"
+    },
+    "QR_CODE": {
+      "description": "QR Code Image URL",
+      "required": false
+    },
+    "PICS": {
+      "description": "Bot Info Image URL",
+      "required": false
+    },
+    "FILE_PIC": {
+      "description": "File Thumbnail Image URL",
+      "required": false
+    },
+    "FILE_CAPTION": {
+      "description": "Custom File Caption",
+      "required": false
+    }
+  },
+  "addons": [],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  }
+}
