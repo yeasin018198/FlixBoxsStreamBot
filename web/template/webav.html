@@ -75,11 +75,13 @@
         @keyframes pulse-icon { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
         @keyframes wiggle-icon { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
         @keyframes beat-icon { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.25); } 30% { transform: scale(1); } 45% { transform: scale(1.25); } 60% { transform: scale(1); } }
+        @keyframes glow-border { 0%, 100% { border-color: rgba(0, 255, 136, 0.3); } 50% { border-color: #00ff88; } }
 
         .anim-bounce { animation: bounce-icon 2s infinite ease-in-out; }
         .anim-pulse { animation: pulse-icon 1.5s infinite ease-in-out; }
         .anim-wiggle { animation: wiggle-icon 2s infinite linear; }
         .anim-beat { animation: beat-icon 2.5s infinite ease-in-out; }
+        .anim-glow { animation: glow-border 2s infinite; }
 
         /* Small Red Watermark Logic */
         .bold-watermark {
@@ -109,6 +111,11 @@
         .tg-btn { background: var(--tg-blue); color: #fff !important; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 13px; text-align: center; text-decoration: none !important; }
 
         .control-btn { border: none; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); color: #fff; display: flex; align-items: center; justify-content: center; }
+
+        /* Sound Instruction Styling */
+        .lang-btn { font-size: 10px; padding: 4px 10px; border-radius: 20px; background: rgba(255,255,255,0.1); border: 1px solid var(--accent); color: var(--accent); cursor: pointer; transition: 0.3s; }
+        .lang-btn.active { background: var(--accent); color: #000; }
+        #instructionText { font-size: 14px; margin-top: 10px; line-height: 1.4; color: #00ff88; font-weight: 600; }
 
         /* Full page click capture for ads */
         #popunder-trigger { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; display: block; background: transparent; }
@@ -146,6 +153,18 @@
         <div class="glass-card text-center">
             <div class="fw-bold text-truncate">{{ file_name }}</div>
             <div class="small opacity-50 mt-1">Size: {{ file_size }}</div>
+        </div>
+
+        <!-- NEW: SOUND FIX INSTRUCTION BOX -->
+        <div class="glass-card text-center anim-glow" style="border: 1px solid var(--accent);">
+            <div class="d-flex justify-content-center gap-2 mb-2">
+                <span class="lang-btn active" id="btn-bn" onclick="changeLang('bn')">বাংলা</span>
+                <span class="lang-btn" id="btn-en" onclick="changeLang('en')">English</span>
+                <span class="lang-btn" id="btn-hi" onclick="changeLang('hi')">हिन्दी</span>
+            </div>
+            <div id="instructionText" class="anim-pulse">
+                <i class="fa-solid fa-volume-xmark"></i> সাউন্ড না আসলে নিচের <b>EXTERNAL PLAYERS</b> অপশন থেকে MX বা VLC প্লেয়ারে দেখুন। 🎧
+            </div>
         </div>
 
         <div class="glass-card">
@@ -235,6 +254,22 @@
     </div>
 
     <script>
+        // Language Switch Logic
+        function changeLang(lang) {
+            const text = document.getElementById('instructionText');
+            const btns = document.querySelectorAll('.lang-btn');
+            btns.forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + lang).classList.add('active');
+
+            if (lang === 'bn') {
+                text.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> সাউন্ড না আসলে নিচের <b>EXTERNAL PLAYERS</b> অপশন থেকে MX বা VLC প্লেয়ারে দেখুন। 🎧';
+            } else if (lang === 'en') {
+                text.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> If there is no sound, watch in MX or VLC Player from the <b>EXTERNAL PLAYERS</b> option below. 🎧';
+            } else if (lang === 'hi') {
+                text.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> यदि आवाज़ नहीं आ रही है, तो नीचे दिए गए <b>EXTERNAL PLAYERS</b> विकल्प থেকে MX या VLC प्लेयर में देखें। 🎧';
+            }
+        }
+
         function forceDownload(url) {
             let secureUrl = url.replace("http://", "https://");
             const link = document.createElement('a');
@@ -260,25 +295,21 @@
         ];
         
         let linkIndex = 0;
-        const cooldowns = {}; // Stores cooldown state for each button ID
+        const cooldowns = {}; 
 
         function handlePopunder(btnId, callback) {
             const now = Date.now();
-            const cooldownTime = 1800000; // 30 Minutes
+            const cooldownTime = 1800000; 
 
             if (!cooldowns[btnId] || (now - cooldowns[btnId] > cooldownTime)) {
-                // Open Direct Link in rotation
                 window.open(DIRECT_LINKS[linkIndex % DIRECT_LINKS.length], '_blank');
                 linkIndex++;
                 cooldowns[btnId] = now;
                 
-                // Hide global trigger if it was clicked
                 if(btnId === 'global_trigger') {
                     document.getElementById('popunder-trigger').style.display = 'none';
                 }
             }
-
-            // Run original function logic if exists
             if (callback) callback();
         }
 
@@ -333,7 +364,6 @@
                 }
             });
 
-            // --- ADVANCED COLOR PRESERVING BRIGHTNESS ENGINE ---
             let startY = 0;
             const container = document.querySelector('#artplayer');
             container.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; });
@@ -346,13 +376,10 @@
                     const currentFilter = art.video.style.filter || "brightness(1) contrast(1) saturate(1)";
                     const bMatch = currentFilter.match(/brightness\(([^)]+)\)/);
                     let b = bMatch ? parseFloat(bMatch[1]) : 1;
-                    
                     let newBrightness = Math.min(Math.max(b + (deltaY / 800), 0.4), 2.0);
-                    
                     let newContrast = 1 + (newBrightness - 1) * 0.7; 
                     let newSaturate = 1 + (newBrightness - 1) * 1.1; 
                     let newSepia = (newBrightness > 1.2) ? (newBrightness - 1.2) * 0.1 : 0; 
-                    
                     art.video.style.filter = `brightness(${newBrightness}) contrast(${newContrast}) saturate(${newSaturate}) sepia(${newSepia})`;
                     art.notice.show = `Brightness: ${Math.round(newBrightness * 100)}%`;
                 } else { 
