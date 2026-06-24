@@ -37,8 +37,16 @@ async def auto_delete_message(message, delay=None):
 
 @Client.on_callback_query()
 async def cb_handler(client: Client, query: CallbackQuery):
+    # 'query.message' None কি না তা চেক করা হচ্ছে এরর এড়াতে
+    if not query.message:
+        return await query.answer("Message is inaccessible!", show_alert=True)
+
     if query.data == "close_data":
-        await query.message.delete()
+        try:
+            await query.message.delete()
+        except Exception:
+            await query.answer("Message already deleted.")
+            
     elif query.data == "about":
         buttons = [[
             InlineKeyboardButton('💻 sᴏᴜʀᴄᴇ ᴄᴏᴅᴇ', url='https://t.me/flixboxs')
@@ -54,6 +62,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 parse_mode=enums.ParseMode.HTML
             )
         except MessageNotModified:
+            pass
+        except Exception:
             pass
     
     elif query.data == "start":
@@ -82,6 +92,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
             )
         except MessageNotModified:
             pass
+        except Exception:
+            pass
         
     elif query.data == "help":
         buttons = [[
@@ -99,6 +111,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
             )  
         except MessageNotModified:
             pass
+        except Exception:
+            pass
 
     elif query.data == "admincmd":
         if not query.from_user.id in ADMINS:
@@ -115,6 +129,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
            )
         except MessageNotModified:
             pass
+        except Exception:
+            pass
 
     elif query.data == "premium_info":
         buttons = [[
@@ -130,6 +146,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 parse_mode=enums.ParseMode.HTML
             )
         except MessageNotModified:
+            pass
+        except Exception:
             pass
 
     elif query.data == "check_plan":
@@ -152,6 +170,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
             )
         except MessageNotModified:
             pass
+        except Exception:
+            pass
 
     elif query.data == "seeplans":
         btn = [[
@@ -160,14 +180,17 @@ async def cb_handler(client: Client, query: CallbackQuery):
             InlineKeyboardButton('❌ ᴄʟᴏsᴇ ❌', callback_data='close_data')
         ]]
         reply_markup = InlineKeyboardMarkup(btn)
-        m=await query.message.reply_sticker("CAACAgQAAxkBAAEiLZ9l7VMuTY7QHn4edR6ouHUosQQ9gwACFxIAArzT-FOmYU0gLeJu7x4E") 
-        await m.delete()
-        await query.message.reply_photo(
-            photo=(QR_CODE),
-            caption=script.PREMIUM_TEXT.format(query.from_user.mention),
-            reply_markup=reply_markup,
-            parse_mode=enums.ParseMode.HTML
-        )
+        try:
+            m=await query.message.reply_sticker("CAACAgQAAxkBAAEiLZ9l7VMuTY7QHn4edR6ouHUosQQ9gwACFxIAArzT-FOmYU0gLeJu7x4E") 
+            await m.delete()
+            await query.message.reply_photo(
+                photo=(QR_CODE),
+                caption=script.PREMIUM_TEXT.format(query.from_user.mention),
+                reply_markup=reply_markup,
+                parse_mode=enums.ParseMode.HTML
+            )
+        except Exception:
+            pass
 
     elif query.data == "reffff":
         user_id = query.from_user.id
@@ -189,6 +212,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 parse_mode=enums.ParseMode.HTML
             )
         except MessageNotModified:
+            pass
+        except Exception:
             pass
 
     elif query.data == "ref_point":
@@ -243,6 +268,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
             )
         except MessageNotModified:
             pass
+        except Exception:
+            pass
         return await query.answer()
 
     elif query.data.startswith("delfilespage_"):
@@ -272,6 +299,8 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 reply_markup=InlineKeyboardMarkup(btns)
             )
         except MessageNotModified:
+            pass
+        except Exception:
             pass
         return await query.answer()
 
@@ -327,4 +356,6 @@ async def cb_handler(client: Client, query: CallbackQuery):
         try:
             await query.message.edit_text("🗑️ Fɪʟᴇ ʜᴀꜱ ʙᴇᴇɴ ᴅᴇʟᴇᴛᴇᴅ ꜱᴜᴄᴄᴇꜱғᴜʟʟʏ.")
         except MessageNotModified:
+            pass
+        except Exception:
             pass
