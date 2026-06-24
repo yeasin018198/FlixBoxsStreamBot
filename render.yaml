@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: av-file-to-link-pro
+    name: FlixBoxsStreamBot
     env: docker
     plan: free
     dockerfilePath: ./Dockerfile
