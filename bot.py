@@ -66,7 +66,7 @@ files = glob.glob(ppath)
 # ===============================
 async def Webav_start():
     print("\n")
-    print("Credit - Telegram @BOT_OWNER26")
+    print("Credit - Telegram @FlixBoxsStreamBot")
 
     try:
         # 1. Initialize additional clients
