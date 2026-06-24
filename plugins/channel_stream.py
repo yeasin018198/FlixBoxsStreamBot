@@ -5,7 +5,7 @@ from web.utils.file_properties import get_hash
 from pyrogram import Client, filters, enums
 from info import BIN_CHANNEL, URL, CHANNEL, IS_SHORTLINK, TUTORIAL_LINK_1
 from utils import temp, get_size, get_shortlink
-from Script import script, CHANNEL_FILE_CAPTION # এখানে CHANNEL_FILE_CAPTION অ্যাড করা হয়েছে
+from Script import script # এখান থেকে আমরা script.CHANNEL_FILE_CAPTION ব্যবহার করবো
 from database.users_db import db
 from pyrogram.errors import FloodWait
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
@@ -14,10 +14,10 @@ from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 async def channel_receive_handler(bot: Client, broadcast: Message):
     try:
         chat_id = broadcast.chat.id
-        # চ্যানেল ব্যান আছে কি না চেক করা
         if str(chat_id).startswith("-100"):
             is_banned = await db.is_channel_blocked(chat_id)
             if is_banned:
+                block_data = await db.get_channel_block_data(chat_id)
                 try:
                     await bot.send_message(
                         chat_id,
@@ -28,14 +28,17 @@ async def channel_receive_handler(bot: Client, broadcast: Message):
                     pass  # mute errors
                 await bot.leave_chat(chat_id)
                 return
-
+        
         file = broadcast.document or broadcast.video
-        file_name = file.file_name if file and hasattr(file, 'file_name') else "Unknown File"
+        file_name = file.file_name if file else "Unknown File"
         
         # বিন চ্যানেলে ফাইল ফরওয়ার্ড করা
-        msg = await broadcast.forward(chat_id=BIN_CHANNEL)
-        
-        # লিঙ্ক জেনারেট করা
+        try:
+            msg = await broadcast.forward(chat_id=BIN_CHANNEL)
+        except Exception as e:
+            print(f"❌ Bin Channel Forward Error: {e}")
+            return
+
         raw_stream = f"{URL}watch/{msg.id}/avbotz.mkv?hash={get_hash(msg)}"
         raw_download = f"{URL}{msg.id}?hash={get_hash(msg)}"
         raw_file_link = f"https://t.me/{temp.U_NAME}?start=file_{msg.id}"
@@ -48,33 +51,29 @@ async def channel_receive_handler(bot: Client, broadcast: Message):
             stream = raw_stream
             download = raw_download
             file_link = raw_file_link
-
-        # বিন চ্যানেলে লগ পাঠানো
+            
         await msg.reply_text(
             text=f"**Channel Name:** `{broadcast.chat.title}`\n**CHANNEL ID:** `{broadcast.chat.id}`\n**Rᴇǫᴜᴇsᴛ ᴜʀʟ:** {stream}",
             quote=True
         )
 
-        # ক্যাপশন এবং বাটন সেট করা
-        new_caption = CHANNEL_FILE_CAPTION.format(CHANNEL, file_name)
+        # এখানে script.CHANNEL_FILE_CAPTION ব্যবহার করা হয়েছে যেন ইমপোর্ট এরর না হয়
+        try:
+            new_caption = script.CHANNEL_FILE_CAPTION.format(CHANNEL, file_name)
+        except AttributeError:
+            new_caption = f"🎬 <b>File:</b> <code>{file_name}</code>"
+
         buttons_list = [
-            [
-                InlineKeyboardButton("• ꜱᴛʀᴇᴀᴍ •", url=stream),
-                InlineKeyboardButton("• ᴅᴏᴡɴʟᴏᴀᴅ •", url=download)
-            ],
-            [
-                InlineKeyboardButton('• ᴄʜᴇᴄᴋ ʜᴇʀᴇ ᴛᴏ ɢᴇᴛ ғɪʟᴇ •', url=file_link)
-            ]
+            [InlineKeyboardButton("• ꜱᴛʀᴇᴀᴍ •", url=stream),
+             InlineKeyboardButton("• ᴅᴏᴡɴʟᴏᴀᴅ •", url=download)],
+            [InlineKeyboardButton('• ᴄʜᴇᴄᴋ ʜᴇʀᴇ ᴛᴏ ɢᴇᴛ ғɪʟᴇ •', url=file_link)]
         ]
-        
         if IS_SHORTLINK:
             buttons_list.append([
                 InlineKeyboardButton("• ʜᴏᴡ ᴛᴏ ᴏᴘᴇɴ •", url=TUTORIAL_LINK_1)
             ])
-            
         buttons = InlineKeyboardMarkup(buttons_list)
-
-        # চ্যানেলের অরিজিনাল মেসেজটি এডিট করে বাটন বসানো
+        
         await bot.edit_message_caption(
             chat_id=broadcast.chat.id,
             message_id=broadcast.id,
@@ -86,20 +85,18 @@ async def channel_receive_handler(bot: Client, broadcast: Message):
     except asyncio.exceptions.TimeoutError:
         print("Request Timed Out! Retrying...")
         await asyncio.sleep(5)
-        return await channel_receive_handler(bot, broadcast)
+        await channel_receive_handler(bot, broadcast)
 
     except FloodWait as w:
         print(f"Sleeping for {w.value}s due to FloodWait")
         await asyncio.sleep(w.value)
-        return await channel_receive_handler(bot, broadcast)
 
     except Exception as e:
-        # ভুল আইডি থাকলে বা বোট অ্যাডমিন না থাকলে এখানে এরর শো করবে
-        print(f"❌ Error in channel_receive_handler: {e}")
         try:
             await bot.send_message(chat_id=BIN_CHANNEL, text=f"❌ **Error:** `{e}`", disable_web_page_preview=True)
         except:
             pass
+        print(f"❌ Can't edit channel message! Error: {e}")
 
 @Client.on_message(filters.command("link") & filters.group & filters.reply)
 async def group_link_handler(bot: Client, message: Message):
@@ -143,21 +140,17 @@ async def group_link_handler(bot: Client, message: Message):
         )
         
         buttons_list = [
-            [
-                InlineKeyboardButton("• ꜱᴛʀᴇᴀᴍ •", url=stream),
-                InlineKeyboardButton("• ᴅᴏᴡɴʟᴏᴀᴅ •", url=download)
-            ],
-            [
-                InlineKeyboardButton('• ᴄʜᴇᴄᴋ ʜᴇʀᴇ ᴛᴏ ɢᴇᴛ ғɪʟᴇ •', url=file_link)
-            ]
+            [InlineKeyboardButton("• ꜱᴛʀᴇᴀᴍ •", url=stream),
+             InlineKeyboardButton("• ᴅᴏᴡɴʟᴏᴀᴅ •", url=download)],
+            [InlineKeyboardButton('• ᴄʜᴇᴄᴋ ʜᴇʀᴇ ᴛᴏ ɢᴇᴛ ғɪʟᴇ •', url=file_link)]
         ]
         
         if IS_SHORTLINK:
             buttons_list.append([
                 InlineKeyboardButton("• ʜᴏᴡ ᴛᴏ ᴏᴘᴇɴ •", url=TUTORIAL_LINK_1)
             ])
-            
         buttons = InlineKeyboardMarkup(buttons_list)
+        
         await status_msg.edit_text(
             text=f"📂 **𝘍𝘪𝘭𝘦 𝘕𝘢𝘮𝘦:** {file_name}\n\n🔗 **𝘓𝘪𝘯𝘬𝘴 𝘎𝘦𝘯𝘦𝘳𝘢𝘵𝘦𝘥 𝘚𝘶𝘤𝘤𝘦𝘴𝘴𝘧𝘶𝘭𝘭𝘺!**",
             reply_markup=buttons,
