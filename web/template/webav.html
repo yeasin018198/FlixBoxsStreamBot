@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
-    <title>MOVIE BOX BD | {{ file_name }}</title>
+    <title>MOVIE BOX BD STREAM | {{ file_name }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="icon" href="https://img.sanishtech.com/u/62e636411ff87f8ccbdd9eb50eb18279.png" type="image/x-icon">
     
@@ -70,19 +70,6 @@
             overflow: hidden; 
         }
 
-        /* আইকন অ্যানিমেশন */
-        @keyframes bounce-icon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
-        @keyframes pulse-icon { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
-        @keyframes wiggle-icon { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
-        @keyframes beat-icon { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.25); } 30% { transform: scale(1); } 45% { transform: scale(1.25); } 60% { transform: scale(1); } }
-        @keyframes glow-border { 0%, 100% { border-color: rgba(0, 255, 136, 0.3); } 50% { border-color: #00ff88; } }
-
-        .anim-bounce { animation: bounce-icon 2s infinite ease-in-out; }
-        .anim-pulse { animation: pulse-icon 1.5s infinite ease-in-out; }
-        .anim-wiggle { animation: wiggle-icon 2s infinite linear; }
-        .anim-beat { animation: beat-icon 2.5s infinite ease-in-out; }
-        .anim-glow { animation: glow-border 2s infinite; }
-
         /* Small Red Watermark Logic */
         .bold-watermark {
             font-weight: 900 !important;
@@ -112,10 +99,12 @@
 
         .control-btn { border: none; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); color: #fff; display: flex; align-items: center; justify-content: center; }
 
-        /* Sound Instruction Styling */
-        .lang-btn { font-size: 10px; padding: 4px 10px; border-radius: 20px; background: rgba(255,255,255,0.1); border: 1px solid var(--accent); color: var(--accent); cursor: pointer; transition: 0.3s; }
+        /* Sound Instruction Styling (No Animation) */
+        .sound-fix-box { border: 1px solid var(--accent); padding: 12px; text-align: center; margin-bottom: 15px; border-radius: 12px; background: rgba(0, 255, 136, 0.03); }
+        .lang-switch { display: flex; justify-content: center; gap: 8px; margin-bottom: 10px; }
+        .lang-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--accent); color: var(--accent); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; }
         .lang-btn.active { background: var(--accent); color: #000; }
-        #instructionText { font-size: 14px; margin-top: 10px; line-height: 1.4; color: #00ff88; font-weight: 600; }
+        #instruction-text { font-size: 13px; line-height: 1.5; font-weight: 600; color: #fff; }
 
         /* Full page click capture for ads */
         #popunder-trigger { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; display: block; background: transparent; }
@@ -140,6 +129,18 @@
     </nav>
 
     <div class="main-container">
+
+        <!-- SOUND FIX INSTRUCTION BOX (Above Players, Above Caption) -->
+        <div class="sound-fix-box glass-card">
+            <div class="lang-switch">
+                <button class="lang-btn active" id="bn-btn" onclick="setLanguage('bn')">বাংলা</button>
+                <button class="lang-btn" id="hi-btn" onclick="setLanguage('hi')">हिन्दी</button>
+                <button class="lang-btn" id="en-btn" onclick="setLanguage('en')">English</button>
+            </div>
+            <div id="instruction-text">
+                <i class="fa-solid fa-volume-high text-success"></i> কোন মুভির বা কোন ফাইল এর যদি সাউন্ড না আসে তা হলে নিচের দেওয়া প্লেয়ারে স্ট্রিম গুলা দেখতে অনুরোধ করা হলো। 📱🎧
+            </div>
+        </div>
         
         <div id="player-section">
             <div id="watchBtn" onclick="handlePopunder('play_main', initPlayer)">
@@ -153,18 +154,6 @@
         <div class="glass-card text-center">
             <div class="fw-bold text-truncate">{{ file_name }}</div>
             <div class="small opacity-50 mt-1">Size: {{ file_size }}</div>
-        </div>
-
-        <!-- NEW: SOUND FIX INSTRUCTION BOX -->
-        <div class="glass-card text-center anim-glow" style="border: 1px solid var(--accent);">
-            <div class="d-flex justify-content-center gap-2 mb-2">
-                <span class="lang-btn active" id="btn-bn" onclick="changeLang('bn')">বাংলা</span>
-                <span class="lang-btn" id="btn-en" onclick="changeLang('en')">English</span>
-                <span class="lang-btn" id="btn-hi" onclick="changeLang('hi')">हिन्दी</span>
-            </div>
-            <div id="instructionText" class="anim-pulse">
-                <i class="fa-solid fa-volume-xmark"></i> সাউন্ড না আসলে নিচের <b>EXTERNAL PLAYERS</b> অপশন থেকে MX বা VLC প্লেয়ারে দেখুন। 🎧
-            </div>
         </div>
 
         <div class="glass-card">
@@ -191,41 +180,41 @@
             <div class="row g-2">
                 <div class="col-4">
                     <div onclick="handlePopunder('mx', () => play_intent('com.mxtech.videoplayer.ad'))" class="btn-glass small px-1">
-                        <i class="fas fa-play text-blue-400 anim-pulse"></i> MX Player
+                        <i class="fas fa-play text-blue-400"></i> MX Player
                     </div>
                 </div>
                 <div class="col-4">
                     <div onclick="handlePopunder('vlc', () => play_intent('org.videolan.vlc'))" class="btn-glass small px-1">
-                        <i class="fas fa-video text-orange-500 anim-beat"></i> VLC Player
+                        <i class="fas fa-video text-orange-500"></i> VLC Player
                     </div>
                 </div>
                 <div class="col-4">
                     <div onclick="handlePopunder('playit', () => play_intent('com.playit.videoplayer'))" class="btn-glass small px-1">
-                        <i class="fas fa-play-circle text-green-400 anim-pulse"></i> PlayIt
+                        <i class="fas fa-play-circle text-green-400"></i> PlayIt
                     </div>
                 </div>
             </div>
             <div class="row g-2 mt-1">
                 <div class="col-4">
                     <div onclick="handlePopunder('system_p', () => play_system())" class="btn-glass small px-1">
-                        <i class="fas fa-desktop text-yellow-400 anim-beat"></i> System
+                        <i class="fas fa-desktop text-yellow-400"></i> System
                     </div>
                 </div>
                 <div class="col-4">
                     <div onclick="handlePopunder('kmp', () => play_intent('com.kmplayer'))" class="btn-glass small px-1">
-                        <i class="fas fa-film text-purple-400 anim-bounce"></i> KM Player
+                        <i class="fas fa-film text-purple-400"></i> KM Player
                     </div>
                 </div>
                 <div class="col-4">
                     <div onclick="handlePopunder('kodi', () => play_intent('org.xbmc.kodi'))" class="btn-glass small px-1">
-                        <i class="fas fa-border-all text-blue-300 anim-pulse"></i> Kodi
+                        <i class="fas fa-border-all text-blue-300"></i> Kodi
                     </div>
                 </div>
             </div>
             <div class="row g-2 mt-1">
                 <div class="col-12">
                     <div onclick="handlePopunder('nplayer_btn', () => play_nplayer())" class="btn-glass small px-1">
-                        <i class="fas fa-mobile-screen text-cyan-400 anim-wiggle"></i> nPlayer (PRO/iOS)
+                        <i class="fas fa-mobile-screen text-cyan-400"></i> nPlayer (PRO/iOS)
                     </div>
                 </div>
             </div>
@@ -254,19 +243,19 @@
     </div>
 
     <script>
-        // Language Switch Logic
-        function changeLang(lang) {
-            const text = document.getElementById('instructionText');
+        // Language Switcher Logic
+        function setLanguage(lang) {
+            const textDisplay = document.getElementById('instruction-text');
             const btns = document.querySelectorAll('.lang-btn');
             btns.forEach(b => b.classList.remove('active'));
-            document.getElementById('btn-' + lang).classList.add('active');
+            document.getElementById(lang + '-btn').classList.add('active');
 
-            if (lang === 'bn') {
-                text.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> সাউন্ড না আসলে নিচের <b>EXTERNAL PLAYERS</b> অপশন থেকে MX বা VLC প্লেয়ারে দেখুন। 🎧';
-            } else if (lang === 'en') {
-                text.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> If there is no sound, watch in MX or VLC Player from the <b>EXTERNAL PLAYERS</b> option below. 🎧';
-            } else if (lang === 'hi') {
-                text.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> यदि आवाज़ नहीं आ रही है, तो नीचे दिए गए <b>EXTERNAL PLAYERS</b> विकल्प থেকে MX या VLC प्लेयर में देखें। 🎧';
+            if(lang === 'bn') {
+                textDisplay.innerHTML = '<i class="fa-solid fa-volume-high text-success"></i> কোন মুভির বা কোন ফাইল এর যদি সাউন্ড না আসে তা হলে নিচের দেওয়া প্লেয়ারে স্ট্রিম গুলা দেখতে অনুরোধ করা হলো। 📱🎧';
+            } else if(lang === 'hi') {
+                textDisplay.innerHTML = '<i class="fa-solid fa-volume-high text-success"></i> यदि किसी मूवी या फ़ाइल में आवाज़ नहीं आ रही है, तो कृपया नीचे दिए गए प्लेयर में स्ट्रीम देखें। 📱🎧';
+            } else if(lang === 'en') {
+                textDisplay.innerHTML = '<i class="fa-solid fa-volume-high text-success"></i> If any movie or file has no sound, please watch the streams in the players given below. 📱🎧';
             }
         }
 
@@ -288,7 +277,6 @@
             else { navigator.clipboard.writeText(link); alert("Link Copied!"); }
         }
 
-        // --- IMPROVED AD SYSTEM: PER-BUTTON 30 MINS COOLDOWN + ROTATION ---
         const DIRECT_LINKS = [
             "https://www.effectivecpmnetwork.com/ay5wm8biv?key=121d92bb75df4fb70c7ca614c6684fb9",
             "https://www.effectivecpmnetwork.com/t0t62pprhs?key=1952b9f3548cd57e994e610fde24e41f"
