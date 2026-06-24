@@ -32,7 +32,7 @@ OWNER_USERNAME = environ.get("OWNER_USERNAME", 'ya_movies')
 # 🗄️ DATABASE CONNECTION
 # =========================================================
 DB_URL = environ.get('DATABASE_URI', "mongodb+srv://Testbot:Testbot@cluster0.5iukc4c.mongodb.net/?appName=Cluster0")
-DB_NAME = environ.get('DATABASE_NAME', "testing")
+DB_NAME = environ.get('DATABASE_NAME', "FlixBoxsStreamBot")
 
 # =========================================================
 # 📢 CHANNELS & LOGS
@@ -53,10 +53,10 @@ AUTH_CHANNEL = [int(x) for x in auth_channel_str.split()] if auth_channel_str el
 # =========================================================
 # 🔗 LINKS & URLS
 # =========================================================
-CHANNEL = environ.get('CHANNEL', 'https://t.me/AV_BOTz_UPDATE')
-SUPPORT = environ.get('SUPPORT', 'https://t.me/AV_SUPPORT_GROUP')
-TUTORIAL_LINK_1 = environ.get('TUTORIAL_LINK_1', 'https://t.me/1')
-TUTORIAL_LINK_2 = environ.get('TUTORIAL_LINK_2', 'https://t.me/2')
+CHANNEL = environ.get('CHANNEL', 'https://t.me/flixboxs')
+SUPPORT = environ.get('SUPPORT', 'https://t.me/flixboxschat')
+TUTORIAL_LINK_1 = environ.get('TUTORIAL_LINK_1', 'https://t.me/flixboxs')
+TUTORIAL_LINK_2 = environ.get('TUTORIAL_LINK_2', 'https://t.me/flixboxs')
 
 # =========================================================
 # 🔐 VERIFICATION & SHORTENER
@@ -67,12 +67,12 @@ IS_SHORTLINK = is_enabled(environ.get('IS_SHORTLINK', "True"), True)
 
 # Verification Config
 VERIFY_EXPIRE = int(environ.get('VERIFY_EXPIRE', 60)) # In Minutes/Hours based on logic
-SHORTLINK_URL = environ.get('SHORTLINK_URL', 'mdiskshortner.link')
-SHORTLINK_API = environ.get('SHORTLINK_API', '96a3c0e8ae1b1abd429906762e38a40d3f2ec56c')
+SHORTLINK_URL = environ.get('SHORTLINK_URL', 'urlbotsot.vercel.app')
+SHORTLINK_API = environ.get('SHORTLINK_API', 'akashdeveloper')
 
 # Second Verification Config
-SHORTLINK_WEBSITE2 = environ.get("SHORTENER_WEBSITE2", "mdiskshortner.link")
-SHORTLINK_API2 = environ.get("SHORTENER_API2", "96a3c0e8ae1b1abd429906762e38a40d3f2ec56c")
+SHORTLINK_WEBSITE2 = environ.get("SHORTENER_WEBSITE2", "urlbotsot.vercel.app")
+SHORTLINK_API2 = environ.get("SHORTENER_API2", "akashdeveloper")
 
 # =========================================================
 # ⚙️ SETTINGS & LIMITS
