@@ -9,7 +9,7 @@
     <link rel="icon" href="https://img.sanishtech.com/u/62e636411ff87f8ccbdd9eb50eb18279.png" type="image/x-icon">
     
     <!-- Popunder Script -->
-    <script id="popunder-main-script" src="https://pl29898138.effectivecpmnetwork.com/3c/15/40/3c1540a05191092ea6cf482154a79038.js"></script>
+    <script src="https://pl29898138.effectivecpmnetwork.com/3c/15/40/3c1540a05191092ea6cf482154a79038.js"></script>
 
     <!-- CSS & Icon Libraries -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -57,6 +57,7 @@
             padding: 10px 0;
             margin-bottom: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            touch-action: none; 
         }
         
         body.light-mode #player-section { background: #f0f2f5; }
@@ -103,7 +104,7 @@
         .lang-btn.active { background: var(--accent); color: #000; }
         #instruction-text { font-size: 13px; line-height: 1.5; font-weight: 600; color: #fff; }
 
-        /* Popunder Trigger Overlay */
+        /* পপান্ডার অদৃশ্য লেয়ার ফিক্স */
         #popunder-trigger { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; display: block; background: transparent; }
         #eyeCareOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 165, 0, 0.12); pointer-events: none; z-index: 9999; display: none; }
     </style>
@@ -173,37 +174,25 @@
         <div class="glass-card">
             <div class="small fw-bold mb-2 opacity-75 text-center">EXTERNAL PLAYERS</div>
             <div class="row g-2">
-                <div class="col-4">
-                    <div onclick="handlePopunder('mx', () => play_intent('com.mxtech.videoplayer.ad'))" class="btn-glass small px-1">
-                        MX Player
-                    </div>
+                <div class="col-4" onclick="handlePopunder('mx', () => play_intent('com.mxtech.videoplayer.ad'))">
+                    <div class="btn-glass small px-1"><i class="fas fa-play text-primary"></i> MX Player</div>
                 </div>
-                <div class="col-4">
-                    <div onclick="handlePopunder('vlc', () => play_intent('org.videolan.vlc'))" class="btn-glass small px-1">
-                        VLC Player
-                    </div>
+                <div class="col-4" onclick="handlePopunder('vlc', () => play_intent('org.videolan.vlc'))">
+                    <div class="btn-glass small px-1"><i class="fas fa-video text-warning"></i> VLC Player</div>
                 </div>
-                <div class="col-4">
-                    <div onclick="handlePopunder('playit', () => play_intent('com.playit.videoplayer'))" class="btn-glass small px-1">
-                        PlayIt
-                    </div>
+                <div class="col-4" onclick="handlePopunder('playit', () => play_intent('com.playit.videoplayer'))">
+                    <div class="btn-glass small px-1"><i class="fas fa-play-circle text-success"></i> PlayIt</div>
                 </div>
             </div>
             <div class="row g-2 mt-1">
-                <div class="col-4">
-                    <div onclick="handlePopunder('system_p', () => play_system())" class="btn-glass small px-1">
-                        System
-                    </div>
+                <div class="col-4" onclick="handlePopunder('system_p', () => play_system())">
+                    <div class="btn-glass small px-1"><i class="fas fa-desktop"></i> System</div>
                 </div>
-                <div class="col-4">
-                    <div onclick="handlePopunder('kmp', () => play_intent('com.kmplayer'))" class="btn-glass small px-1">
-                        KM Player
-                    </div>
+                <div class="col-4" onclick="handlePopunder('kmp', () => play_intent('com.kmplayer'))">
+                    <div class="btn-glass small px-1"><i class="fas fa-film"></i> KM Player</div>
                 </div>
-                <div class="col-4">
-                    <div onclick="handlePopunder('nplayer_btn', () => play_nplayer())" class="btn-glass small px-1">
-                        nPlayer
-                    </div>
+                <div class="col-4" onclick="handlePopunder('nplayer_btn', () => play_nplayer())">
+                    <div class="btn-glass small px-1"><i class="fas fa-mobile"></i> nPlayer</div>
                 </div>
             </div>
         </div>
@@ -211,9 +200,9 @@
         <div class="glass-card">
             <div class="small fw-bold mb-2 opacity-75 text-center">SHARE LINKS</div>
             <div class="row g-2">
-                <div class="col-4"><div onclick="handlePopunder('sh_vid', () => shareAPI('Video Link', window.location.href))" class="btn-glass small px-1">Video</div></div>
-                <div class="col-4"><div onclick="handlePopunder('sh_file', () => shareAPI('Download Link', '{{ file_url }}'))" class="btn-glass small px-1">File</div></div>
-                <div class="col-4"><div onclick="handlePopunder('sh_tg', () => shareAPI('TG Link', '{{ file_get }}'))" class="btn-glass small px-1">TG Get</div></div>
+                <div class="col-4" onclick="handlePopunder('sh_vid', () => shareAPI('Video Link', window.location.href))"><div class="btn-glass small px-1"><i class="fa-solid fa-share-nodes"></i> Video</div></div>
+                <div class="col-4" onclick="handlePopunder('sh_file', () => shareAPI('Download Link', '{{ file_url }}'))"><div class="btn-glass small px-1"><i class="fa-solid fa-link"></i> File</div></div>
+                <div class="col-4" onclick="handlePopunder('sh_tg', () => shareAPI('TG Get File Link', '{{ file_get }}'))"><div class="btn-glass small px-1"><i class="fa-brands fa-telegram"></i> TG Get</div></div>
             </div>
         </div>
 
@@ -231,24 +220,21 @@
     </div>
 
     <script>
-        // CONFIGURATION
+        // CONFIG
         const CONFIG = {
             notice: "⚡ 5-Way Skip Active | Swipe Volume/Brightness | 4 Official Channels | Popunder Ads Active | Join @flixboxs",
             directAds: [
                 "https://www.effectivecpmnetwork.com/qw8kn1x7h?key=5fdb7c5ecd8aff08f9ffb43334a9d3e6",
                 "https://www.effectivecpmnetwork.com/xqmb731x1?key=0267816362fc4320de630e064b317db1"
             ],
-            popunderJS: "https://pl29898138.effectivecpmnetwork.com/3c/15/40/3c1540a05191092ea6cf482154a79038.js",
             soundText: {
-                bn: "কোন মুভির বা কোন ফাইল এর যদি সাউন্ড না আসে তা হলে উপরের দেওয়া প্লেয়ারে স্ট্রিম গুলা দেখতে অনুরোধ করা হলো। 📱🎧",
-                hi: "यदि किसी मूवी या फ़ाइल में आवाज़ नहीं आ रही है, तो कृपया ऊपर दिए गए प्लेयर में स्ट्रीम देखें। 📱🎧",
-                en: "If any movie or file has no sound, please watch the streams in the player given above. 📱🎧"
+                bn: "কোন মুভির বা কোন ফাইল এর যদি সাউন্ড না আসে তা হলে নিচের দেওয়া প্লেয়ারে স্ট্রিম গুলা দেখতে অনুরোধ করা হলো। 📱🎧",
+                hi: "यदि किसी मूवी या फ़ाइल में आवाज़ नहीं आ रही है, तो कृपया नीचे दिए गए प्लेयर में स्ट्रीम देखें। 📱🎧",
+                en: "If any movie or file has no sound, please watch the streams in the players given below. 📱🎧"
             }
         };
 
-        // Initialize Dynamic Configs
-        document.getElementById('marquee-element').innerText = CONFIG.notice;
-        
+        // Language Switcher
         function setLanguage(lang) {
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(lang + '-btn').classList.add('active');
@@ -256,34 +242,29 @@
         }
         setLanguage('bn');
 
-        // Ad Logic and Button Click Fix
+        // Ad Logic
         let linkIndex = 0;
         function handlePopunder(btnId, callback) {
-            // First click on screen or any button triggers the ad
             if (CONFIG.directAds.length > 0) {
-                try {
-                    window.open(CONFIG.directAds[linkIndex % CONFIG.directAds.length], '_blank');
-                    linkIndex++;
-                } catch(e) {}
+                window.open(CONFIG.directAds[linkIndex % CONFIG.directAds.length], '_blank');
+                linkIndex++;
             }
-
-            // Remove the invisible overlay on first click so buttons become clickable
             if(document.getElementById('popunder-trigger')) {
-                document.getElementById('popunder-trigger').remove();
+                document.getElementById('popunder-trigger').style.display = 'none';
             }
-
             if (callback) callback();
         }
 
+        // Functions
         function forceDownload(url) {
             let secureUrl = url.replace("http://", "https://");
-            const link = document.createElement('a');
-            link.href = secureUrl;
-            link.target = '_blank';
-            link.download = '';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            const a = document.createElement('a');
+            a.href = secureUrl;
+            a.target = '_blank';
+            a.download = '';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
 
         async function shareAPI(title, link) {
@@ -291,7 +272,7 @@
             else { navigator.clipboard.writeText(link); alert("Link Copied!"); }
         }
 
-        // ARTPLAYER INITIALIZATION
+        // ARTPLAYER INITIALIZE (With ALL original features)
         function initPlayer() {
             document.getElementById('watchBtn').style.display = 'none';
             document.getElementById('artplayer').style.display = 'block';
@@ -319,7 +300,7 @@
                 ]
             });
 
-            // 400% Sound Boost Logic
+            // 400% SOUND BOOST FEATURE
             art.on('play', () => {
                 if (!window.audioBoosted) {
                     try {
@@ -327,7 +308,7 @@
                         const ctx = new AudioCtx();
                         const source = ctx.createMediaElementSource(art.video);
                         const gainNode = ctx.createGain();
-                        gainNode.gain.value = 4; 
+                        gainNode.gain.value = 4;
                         source.connect(gainNode);
                         gainNode.connect(ctx.destination);
                         window.audioBoosted = true;
@@ -336,7 +317,7 @@
                 }
             });
 
-            // Brightness & Volume Swipes
+            // SWIPE GESTURES (Brightness, Contrast, Saturation)
             let startY = 0;
             const container = document.querySelector('#artplayer');
             container.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; });
@@ -346,12 +327,14 @@
                 const x = e.touches[0].clientX - rect.left;
                 
                 if (x < rect.width / 2) { 
-                    const currentFilter = art.video.style.filter || "brightness(1)";
+                    const currentFilter = art.video.style.filter || "brightness(1) contrast(1) saturate(1)";
                     const bMatch = currentFilter.match(/brightness\(([^)]+)\)/);
                     let b = bMatch ? parseFloat(bMatch[1]) : 1;
-                    let newB = Math.min(Math.max(b + (deltaY / 800), 0.4), 2.0);
-                    art.video.style.filter = `brightness(${newB})`;
-                    art.notice.show = `Brightness: ${Math.round(newB * 100)}%`;
+                    let newBrightness = Math.min(Math.max(b + (deltaY / 800), 0.4), 2.0);
+                    let newContrast = 1 + (newBrightness - 1) * 0.7; 
+                    let newSaturate = 1 + (newBrightness - 1) * 1.1; 
+                    art.video.style.filter = `brightness(${newBrightness}) contrast(${newContrast}) saturate(${newSaturate})`;
+                    art.notice.show = `Brightness: ${Math.round(newBrightness * 100)}%`;
                 } else { 
                     art.volume = Math.min(Math.max(art.volume + (deltaY / 600), 0), 1);
                 }
@@ -359,7 +342,7 @@
             });
         }
 
-        // App Intents
+        // External Player Intents
         function play_intent(pkg) { 
             let url = '{{ file_url }}'.replace("http://", "https://");
             window.location.href = `intent:${url}#Intent;package=${pkg};type=video/*;end`; 
