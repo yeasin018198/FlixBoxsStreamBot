@@ -245,10 +245,10 @@ class script(object):
 🥈 ɢᴏʟᴅ : ৳210 / 3 ᴍᴏɴᴛʜs
 🥇 ᴅɪᴀᴍᴏɴᴅ : ৳680 / 1 ʏᴇᴀʀ
 
-💸 <b>Bkash Number:</b> <code>01612132304</code> (ᴛᴀᴘ ᴛᴏ ᴄᴏᴘʏ)
+💸 <b>Bkash Number:</b> <code>........</code> (ᴛᴀᴘ ᴛᴏ ᴄᴏᴘʏ)
 
 📸 <i>sᴇɴᴅ ᴘᴀʏᴍᴇɴᴛ sᴄʀᴇᴇɴsʜᴏᴛ ᴛᴏ ᴀᴅᴍɪɴ ꜰᴏʀ ᴀᴄᴛɪᴠᴀᴛɪᴏɴ.</i>
-🏷️ <a href='https://t.me/AHSakib1'>ᴄʜᴇᴄᴋ ᴘʀᴇᴍɪᴜᴍ ᴘʀᴏᴏꜰs</a>"""
+🏷️ <a href='https://t.me/flixboxs'>ᴄʜᴇᴄᴋ ᴘʀᴇᴍɪᴜᴍ ᴘʀᴏᴏꜰs</a>"""
     
     PREMIUM_TEXT = """<b>👑 <u>ᴘʀᴇᴍɪᴜᴍ sᴛᴀᴛᴜs</u></b>
 
