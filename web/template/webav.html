@@ -72,9 +72,17 @@
             background: #000; margin-bottom: 25px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.6);
             animation: fadeInDown 1s;
+            /* নিশ্চিত করা যে এটি হেডারের নিচে না যায় */
+            position: relative;
+            z-index: 10;
         }
 
-        .artplayer-app { width: 100%; aspect-ratio: 16/9; }
+        .artplayer-app { 
+            width: 100%; 
+            aspect-ratio: 16/9; 
+            /* স্লাইড জেস্টার লক করার জন্য */
+            touch-action: none; 
+        }
 
         .bold-watermark {
             font-weight: 900; font-size: 12px; color: #ff0000;
@@ -314,8 +322,14 @@
             // অরিজিনাল সোয়াইপ জেশ্চার (Brightness, Contrast, Saturation, Sepia)
             let startY = 0;
             const container = document.querySelector('#artplayer');
-            container.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; });
+            container.addEventListener('touchstart', (e) => { 
+                startY = e.touches[0].clientY; 
+            }, { passive: false }); // Lock active
+
             container.addEventListener('touchmove', (e) => {
+                // স্লাইড করার সময় পেজ নড়া বন্ধ করবে
+                e.preventDefault(); 
+                
                 const deltaY = startY - e.touches[0].clientY;
                 const rect = container.getBoundingClientRect();
                 const x = e.touches[0].clientX - rect.left;
@@ -332,7 +346,7 @@
                     art.volume = Math.min(Math.max(art.volume + (deltaY / 600), 0), 1);
                 }
                 startY = e.touches[0].clientY;
-            });
+            }, { passive: false }); // Lock active
         }
 
         // ৪. অন্যান্য ফাংশন
