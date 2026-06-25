@@ -35,6 +35,8 @@
             margin: 0; padding: 0;
             transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             overflow-x: hidden;
+            /* পেজ বাউন্স বা অতিরিক্ত স্ক্রল বন্ধ করার জন্য */
+            overscroll-behavior-y: contain;
         }
 
         body.light-mode { background: #f0f2f5; color: #1a1a1a; }
@@ -52,16 +54,24 @@
         .fade-in-up { animation: fadeInUp 0.8s ease-out both; }
         .scale-in { animation: zoomIn 0.5s ease-out both; }
 
+        /* হেডার ফিক্সড করার জন্য নতুন স্টাইল */
+        .sticky-header-container {
+            position: sticky;
+            top: 0;
+            z-index: 2000;
+            background: var(--bg-dark);
+        }
+
         .notice-bar { 
             background: linear-gradient(90deg, #00ff88, #00b09b); 
             color: #000; padding: 10px; font-weight: 800; text-align: center; 
-            font-size: 13px; z-index: 1001; position: relative;
+            font-size: 13px; position: relative;
             box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
         }
 
         .navbar { 
-            padding: 15px 20px; background: rgba(0,0,0,0.5); 
-            backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 1000;
+            padding: 15px 20px; background: rgba(0,0,0,0.8); 
+            backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
@@ -72,7 +82,7 @@
             background: #000; margin-bottom: 25px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.6);
             animation: fadeInDown 1s;
-            /* নিশ্চিত করা যে এটি হেডারের নিচে না যায় */
+            /* প্লেয়ারকে হেডারের ওপরে রাখার জন্য index বাড়ানো হয়েছে */
             position: relative;
             z-index: 10;
         }
@@ -80,7 +90,7 @@
         .artplayer-app { 
             width: 100%; 
             aspect-ratio: 16/9; 
-            /* স্লাইড জেস্টার লক করার জন্য */
+            /* প্লেয়ারের ভেতর ব্রাউজার স্ক্রল ব্লক করা হয়েছে */
             touch-action: none; 
         }
 
@@ -161,19 +171,22 @@
     <div id="global-ad-trigger" onclick="handleFirstClick()"></div>
     <div id="eyeCareOverlay"></div>
 
-    <div class="notice-bar">
-        <marquee scrollamount="6">⚡ 5-Way Skip Active | Swipe Volume/Brightness | Sound Boost 400% | Rotation Active | Join @FLIXBOXS</marquee>
-    </div>
+    <!-- হেডারগুলোকে একটি স্টিকি কন্টেইনারে রাখা হয়েছে -->
+    <div class="sticky-header-container">
+        <div class="notice-bar">
+            <marquee scrollamount="6">⚡ 5-Way Skip Active | Swipe Volume/Brightness | Sound Boost 400% | Rotation Active | Join @FLIXBOXS</marquee>
+        </div>
 
-    <nav class="navbar d-flex justify-content-between align-items-center">
-        <div class="fw-bold fs-4 animate__animated animate__lightSpeedInLeft">
-            <i class="fa-solid fa-robot text-success"></i> FLIX BOXS
-        </div>
-        <div class="d-flex gap-2">
-            <button class="control-btn" onclick="toggleDarkMode()"><i class="fa-solid fa-circle-half-stroke"></i></button>
-            <button class="control-btn" onclick="toggleEyeCare()"><i class="fa-solid fa-eye"></i></button>
-        </div>
-    </nav>
+        <nav class="navbar d-flex justify-content-between align-items-center">
+            <div class="fw-bold fs-4 animate__animated animate__lightSpeedInLeft">
+                <i class="fa-solid fa-robot text-success"></i> FLIX BOXS
+            </div>
+            <div class="d-flex gap-2">
+                <button class="control-btn" onclick="toggleDarkMode()"><i class="fa-solid fa-circle-half-stroke"></i></button>
+                <button class="control-btn" onclick="toggleEyeCare()"><i class="fa-solid fa-eye"></i></button>
+            </div>
+        </nav>
+    </div>
 
     <div class="main-container">
         
@@ -324,10 +337,10 @@
             const container = document.querySelector('#artplayer');
             container.addEventListener('touchstart', (e) => { 
                 startY = e.touches[0].clientY; 
-            }, { passive: false }); // Lock active
+            }, { passive: false });
 
             container.addEventListener('touchmove', (e) => {
-                // স্লাইড করার সময় পেজ নড়া বন্ধ করবে
+                // এখানে স্ক্রিন লক করা হয়েছে যেন স্লাইড করার সময় পেজ না নড়ে
                 e.preventDefault(); 
                 
                 const deltaY = startY - e.touches[0].clientY;
@@ -346,7 +359,7 @@
                     art.volume = Math.min(Math.max(art.volume + (deltaY / 600), 0), 1);
                 }
                 startY = e.touches[0].clientY;
-            }, { passive: false }); // Lock active
+            }, { passive: false });
         }
 
         // ৪. অন্যান্য ফাংশন
