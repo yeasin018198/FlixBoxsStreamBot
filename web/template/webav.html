@@ -33,9 +33,10 @@
             margin: 0; padding: 0;
             overflow-x: hidden;
             overscroll-behavior-y: contain;
+            transition: background 0.3s;
         }
 
-        /* স্টিকি প্লেয়ার সেকশন (লক থাকবে) */
+        /* লকিং সেকশন: প্লেয়ার এবং হেডার লক থাকবে */
         .fixed-top-section {
             position: sticky;
             top: 0;
@@ -72,6 +73,7 @@
         .glass-card { 
             background: var(--card-dark); padding: 18px; border-radius: 18px; 
             margin-bottom: 15px; border: 1px solid rgba(128, 128, 128, 0.2);
+            transition: 0.3s;
         }
 
         /* বাটন ডিজাইন */
@@ -89,7 +91,7 @@
 
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
 
-        /* ৩টি শেয়ার আইকন ডিজাইন */
+        /* শেয়ার আইকন ডিজাইন */
         .share-icons-row {
             display: flex; justify-content: space-around; align-items: center;
             padding: 10px 0; margin-top: 10px;
@@ -112,14 +114,18 @@
         .lang-btn { background: #1a2232; border: 1px solid var(--accent); color: var(--accent); padding: 5px 15px; border-radius: 20px; font-size: 12px; }
         .lang-btn.active { background: var(--accent); color: #000; }
 
+        /* overlays */
         #eyeCareOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 165, 0, 0.1); pointer-events: none; z-index: 9999; display: none; }
+        .light-mode { background: #eef2f7; color: #000; }
+        .light-mode .glass-card { background: #fff; border-color: #ccc; }
+        .light-mode .fixed-top-section { background: #fff; }
     </style>
 </head>
 <body>
 
     <div id="eyeCareOverlay"></div>
 
-    <!-- লকিং সেকশন: প্লেয়ার এবং হেডার লক থাকবে -->
+    <!-- লকিং সেকশন -->
     <div class="fixed-top-section">
         <div class="notice-bar">
             <marquee scrollamount="6">⚡ 5-Way Skip Active | Swipe Volume/Brightness | Sound Boost 400% | Rotation Active | Join @FLIXBOXS</marquee>
@@ -130,13 +136,13 @@
                 <i class="fa-solid fa-clapperboard text-danger"></i> <span style="color: var(--accent);">FLIX BOXS</span>
             </div>
             <div class="d-flex gap-2">
-                <button class="btn btn-dark rounded-circle" onclick="triggerAds(); toggleDarkMode()"><i class="fa-solid fa-circle-half-stroke"></i></button>
-                <button class="btn btn-dark rounded-circle" onclick="triggerAds(); toggleEyeCare()"><i class="fa-solid fa-eye"></i></button>
+                <button class="btn btn-dark rounded-circle" onclick="handleAdClick('darkBtn', toggleDarkMode)"><i class="fa-solid fa-circle-half-stroke"></i></button>
+                <button class="btn btn-dark rounded-circle" onclick="handleAdClick('eyeBtn', toggleEyeCare)"><i class="fa-solid fa-eye"></i></button>
             </div>
         </nav>
 
         <div id="player-section">
-            <div id="watchBtn" onclick="initPlayer()" style="width:100%; aspect-ratio:16/9; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;">
+            <div id="watchBtn" onclick="handleAdClick('playerMain', initPlayer)" style="width:100%; aspect-ratio:16/9; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;">
                 <i class="fa-solid fa-circle-play fa-4x text-info mb-2"></i>
                 <h6 class="fw-bold m-0 text-info uppercase">WATCH ONLINE (@FLIXBOXS)</h6>
             </div>
@@ -151,45 +157,45 @@
             <div class="small opacity-50 mt-1"><span class="text-success">SIZE:</span> {{ file_size }}</div>
         </div>
 
-        <!-- মেইন ডাউনলোড বাটন সেকশন -->
+        <!-- ডাউনলোড সেকশন -->
         <div class="glass-card">
-            <div onclick="triggerAds(); forceDownload()" class="btn-prime btn-fast">
+            <div onclick="handleAdClick('highDL', forceDownload)" class="btn-prime btn-fast">
                 <i class="fa-solid fa-bolt text-warning animate__animated animate__bounce animate__infinite"></i> HIGH SPEED DOWNLOAD
             </div>
             <div class="row g-2 mt-1">
                 <div class="col-6">
-                    <div onclick="triggerAds(); forceDownload()" class="btn-prime btn-normal">
+                    <div onclick="handleAdClick('normDL', forceDownload)" class="btn-prime btn-normal">
                         <i class="fa-solid fa-download"></i> DOWNLOAD
                     </div>
                 </div>
                 <div class="col-6">
-                    <a href="{{ file_get }}" target="_blank" onclick="triggerAds()" class="btn-prime btn-tg">
+                    <a href="{{ file_get }}" target="_blank" onclick="handleAdClick('tgGet', null)" class="btn-prime btn-tg">
                         <i class="fa-brands fa-telegram"></i> GET FILE
                     </a>
                 </div>
             </div>
 
-            <!-- ৩টি শেয়ার আইকন (Stream, DL Link, TG Link Copy) -->
+            <!-- শেয়ার আইকন -->
             <div class="share-icons-row">
-                <div class="share-icon-btn" onclick="copyLink('{{ file_url }}', 'Stream Link')">
+                <div class="share-icon-btn" onclick="handleAdClick('copyStream', copyStreamPage)">
                     <div class="icon-circle"><i class="fas fa-play"></i></div>
-                    <span class="icon-label">Stream</span>
+                    <span class="icon-label">Watch Page</span>
                 </div>
-                <div class="share-icon-btn" onclick="copyLink('{{ file_url }}', 'Download Link')">
+                <div class="share-icon-btn" onclick="handleAdClick('copyLink', copyDownloadLink)">
                     <div class="icon-circle"><i class="fas fa-cloud-download-alt"></i></div>
                     <span class="icon-label">DL Link</span>
                 </div>
-                <div class="share-icon-btn" onclick="copyLink('{{ file_get }}', 'Telegram Link')">
-                    <div class="icon-circle"><i class="fab fa-telegram-plane"></i></div>
-                    <span class="icon-label">Telegram</span>
+                <div class="share-icon-btn" onclick="handleAdClick('copyFile', copyTelegramLink)">
+                    <div class="icon-circle"><i class="fas fa-file-zipper"></i></div>
+                    <span class="icon-label">File Link</span>
                 </div>
             </div>
 
             <div class="sound-fix-box mt-3">
                 <div class="lang-switch d-flex justify-content-center gap-2 mb-2">
-                    <button class="lang-btn active" onclick="triggerAds(); changeLang('bn', this)">বাংলা</button>
-                    <button class="lang-btn" onclick="triggerAds(); changeLang('hi', this)">हिन्दी</button>
-                    <button class="lang-btn" onclick="triggerAds(); changeLang('en', this)">English</button>
+                    <button class="lang-btn active" onclick="handleAdClick('langBN', () => changeLang('bn', event.target))">বাংলা</button>
+                    <button class="lang-btn" onclick="handleAdClick('langHI', () => changeLang('hi', event.target))">हिन्दी</button>
+                    <button class="lang-btn" onclick="handleAdClick('langEN', () => changeLang('en', event.target))">English</button>
                 </div>
                 <div id="instruction-text" class="small fw-bold text-center">
                     <i class="fa-solid fa-volume-high text-info"></i> সাউন্ড না আসলে প্লেয়ারের ভেতর থেকে ভলিউম বুস্ট চেক করুন। 📱🎧
@@ -197,32 +203,32 @@
             </div>
         </div>
 
-        <!-- ৭টি এক্সটারনাল প্লেয়ার (Prime Logic) -->
+        <!-- এক্সটারনাল প্লেয়ার -->
         <div class="glass-card">
             <div class="small fw-bold mb-3 text-center text-info tracking-widest">EXTERNAL PLAYERS</div>
             <div class="row g-2">
-                <div class="col-6"><div onclick="triggerAds(); vlc_player()" class="btn-prime" style="background:#1a2232; border:1px solid #f97316;"><i class="fas fa-video" style="color:#f97316;"></i> VLC PLAYER</div></div>
-                <div class="col-6"><div onclick="triggerAds(); mx_player()" class="btn-prime" style="background:#1a2232; border:1px solid #60a5fa;"><i class="fas fa-play" style="color:#60a5fa;"></i> MX PLAYER</div></div>
+                <div class="col-6"><div onclick="handleAdClick('vlc', vlc_player)" class="btn-prime" style="background:#1a2232; border:1px solid #f97316;"><i class="fas fa-video" style="color:#f97316;"></i> VLC PLAYER</div></div>
+                <div class="col-6"><div onclick="handleAdClick('mx', mx_player)" class="btn-prime" style="background:#1a2232; border:1px solid #60a5fa;"><i class="fas fa-play" style="color:#60a5fa;"></i> MX PLAYER</div></div>
             </div>
             <div class="row g-2">
-                <div class="col-6"><div onclick="triggerAds(); playit_player()" class="btn-prime" style="background:#1a2232; border:1px solid #4ade80;"><i class="fas fa-play-circle" style="color:#4ade80;"></i> PLAYIT</div></div>
-                <div class="col-6"><div onclick="triggerAds(); system_player()" class="btn-prime" style="background:#1a2232; border:1px solid #facc15;"><i class="fas fa-desktop" style="color:#facc15;"></i> SYSTEM</div></div>
+                <div class="col-6"><div onclick="handleAdClick('playit', playit_player)" class="btn-prime" style="background:#1a2232; border:1px solid #4ade80;"><i class="fas fa-play-circle" style="color:#4ade80;"></i> PLAYIT</div></div>
+                <div class="col-6"><div onclick="handleAdClick('system', system_player)" class="btn-prime" style="background:#1a2232; border:1px solid #facc15;"><i class="fas fa-desktop" style="color:#facc15;"></i> SYSTEM</div></div>
             </div>
             <div class="row g-2">
-                <div class="col-4"><div onclick="triggerAds(); km_player()" class="btn-prime" style="background:#1a2232; border:1px solid #c084fc; font-size:9px;"><i class="fas fa-film" style="color:#c084fc;"></i> KM PLAYER</div></div>
-                <div class="col-4"><div onclick="triggerAds(); kodi_player()" class="btn-prime" style="background:#1a2232; border:1px solid #93c5fd; font-size:9px;"><i class="fas fa-border-all" style="color:#93c5fd;"></i> KODI</div></div>
-                <div class="col-4"><div onclick="triggerAds(); n_player()" class="btn-prime" style="background:#1a2232; border:1px solid #22d3ee; font-size:9px;"><i class="fas fa-mobile-screen" style="color:#22d3ee;"></i> nPlayer</div></div>
+                <div class="col-4"><div onclick="handleAdClick('km', km_player)" class="btn-prime" style="background:#1a2232; border:1px solid #c084fc; font-size:9px;"><i class="fas fa-film" style="color:#c084fc;"></i> KM PLAYER</div></div>
+                <div class="col-4"><div onclick="handleAdClick('kodi', kodi_player)" class="btn-prime" style="background:#1a2232; border:1px solid #93c5fd; font-size:9px;"><i class="fas fa-border-all" style="color:#93c5fd;"></i> KODI</div></div>
+                <div class="col-4"><div onclick="handleAdClick('npl', n_player)" class="btn-prime" style="background:#1a2232; border:1px solid #22d3ee; font-size:9px;"><i class="fas fa-mobile-screen" style="color:#22d3ee;"></i> nPlayer</div></div>
             </div>
         </div>
 
-        <!-- ৪টি টেলিগ্রাম বাটন -->
+        <!-- টেলিগ্রাম বাটন -->
         <div class="glass-card">
             <div class="fw-bold mb-3 text-center">JOIN OUR CHANNELS</div>
             <div class="row g-2">
-                <div class="col-6"><a href="https://t.me/FlixBoxsOfficial" target="_blank" onclick="triggerAds()" class="btn-prime btn-normal w-100">Official</a></div>
-                <div class="col-6"><a href="http://t.me/FlixBoxs" target="_blank" onclick="triggerAds()" class="btn-prime btn-normal w-100">Movies</a></div>
-                <div class="col-6"><a href="http://t.me/FlixBoxsChat" target="_blank" onclick="triggerAds()" class="btn-prime btn-normal w-100">Chat Group</a></div>
-                <div class="col-6"><a href="https://flixboxsmovies.blogspot.com/" target="_blank" onclick="triggerAds()" class="btn-prime btn-normal w-100">Website</a></div>
+                <div class="col-6"><a href="https://t.me/FlixBoxsOfficial" target="_blank" onclick="handleAdClick('j1', null)" class="btn-prime btn-normal w-100">Official</a></div>
+                <div class="col-6"><a href="http://t.me/FlixBoxs" target="_blank" onclick="handleAdClick('j2', null)" class="btn-prime btn-normal w-100">Movies</a></div>
+                <div class="col-6"><a href="http://t.me/FlixBoxsChat" target="_blank" onclick="handleAdClick('j3', null)" class="btn-prime btn-normal w-100">Chat Group</a></div>
+                <div class="col-6"><a href="https://flixboxsmovies.blogspot.com/" target="_blank" onclick="handleAdClick('j4', null)" class="btn-prime btn-normal w-100">Website</a></div>
             </div>
         </div>
 
@@ -230,7 +236,7 @@
     </div>
 
     <script>
-        // ১. অ্যাড লজিক
+        // ১. অ্যাড ম্যানেজমেন্ট সিস্টেম
         const adLinks = [
             "https://www.effectivecpmnetwork.com/xqmb731x1?key=0267816362fc4320de630e064b317db1",
             "https://www.effectivecpmnetwork.com/qw8kn1x7h?key=5fdb7c5ecd8aff08f9ffb43334a9d3e6",
@@ -240,38 +246,62 @@
             "https://www.effectivecpmnetwork.com/iqs1w6v06c?key=19b65cbb2964d6f0a3c934b5ee855f18"
         ];
 
-        function triggerAds() {
+        // অ্যাড ট্র্যাকার অবজেক্ট (রিলোড করলে রিসেট হবে)
+        const adTracker = {};
+
+        function handleAdClick(buttonId, successCallback) {
             const now = Date.now();
-            const last = localStorage.getItem('last_ad_flix') || 0;
-            if (now - last > 10 * 60 * 1000) {
-                for(let i=0; i<2; i++){
+            const lastTime = adTracker[buttonId] || 0;
+            const tenMinutes = 10 * 60 * 1000;
+
+            if (now - lastTime > tenMinutes) {
+                // ২টা অ্যাড ওপেন হবে
+                for (let i = 0; i < 2; i++) {
                     window.open(adLinks[Math.floor(Math.random() * adLinks.length)], '_blank');
                 }
-                localStorage.setItem('last_ad_flix', now);
+                adTracker[buttonId] = now; // এই বাটনের জন্য টাইম আপডেট
+                if (successCallback) successCallback();
+            } else {
+                // ১০ মিনিটের ভেতর থাকলে সরাসরি কাজ করবে
+                if (successCallback) successCallback();
             }
         }
 
-        // ২. আর্টপ্লেয়ার ইনিশিয়ালাইজেশন
+        // ২. আর্টপ্লেয়ার লজিক
+        const cleanUrl = '{{ file_url }}'.replace("http://", "https://").trim();
+
         function initPlayer() {
-            triggerAds();
             document.getElementById('watchBtn').style.display = 'none';
             document.getElementById('artplayer').style.display = 'block';
 
             const art = new Artplayer({
                 container: '#artplayer',
-                url: '{{ file_url }}'.replace("http://", "https://"),
+                url: cleanUrl,
                 title: '{{ file_name }}',
                 autoSize: true, playbackRate: true, aspectRatio: true,
                 setting: true, fullscreen: true, pip: true, theme: '#00e5ff',
                 moreVideoAttr: { crossOrigin: 'anonymous', playsInline: true },
-                layers: [{ html: '<div style="font-weight:900;color:red;text-shadow:2px 2px #000;padding:5px;">FLIX BOXS</div>', style: { position: 'absolute', top: '15px', right: '15px' } }],
+                layers: [{ 
+                    html: '<div style="font-weight:900;color:red;text-shadow:2px 2px #000;padding:5px;">FLIX BOXS</div>', 
+                    style: { position: 'absolute', top: '15px', right: '15px' } 
+                }],
                 controls: [
-                    { position: 'right', html: '<i class="fa-solid fa-arrows-rotate"></i>', click: function(){ art.fullscreen = true; screen.orientation.lock('landscape').catch(()=>{}); }},
+                    { 
+                        position: 'right', 
+                        html: '<i class="fa-solid fa-arrows-rotate"></i>', 
+                        click: function(){ 
+                            art.fullscreen = true; 
+                            if(screen.orientation && screen.orientation.lock) {
+                                screen.orientation.lock('landscape').catch(()=>{}); 
+                            }
+                        } 
+                    },
                     { position: 'right', html: '<i class="fa-solid fa-rotate-left"></i>', click: () => art.backward = 10 },
                     { position: 'right', html: '<i class="fa-solid fa-rotate-right"></i>', click: () => art.forward = 10 }
                 ]
             });
 
+            // সাউন্ড বুস্ট ৪০০%
             art.on('play', () => {
                 if (!window.audioBoosted) {
                     try {
@@ -285,6 +315,7 @@
                 }
             });
 
+            // সোয়াইপ কন্ট্রোল (ভলিউম ও ব্রাইটনেস)
             let startY = 0;
             const container = document.querySelector('#artplayer');
             container.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; }, { passive: false });
@@ -306,20 +337,20 @@
             }, { passive: false });
         }
 
-        const cleanUrl = "{{ file_url }}".replace("http://", "https://").trim();
-
         // ডাউনলোড ফাংশন
         function forceDownload() {
-            if(confirm("Confirm Download?")){
-                window.open(cleanUrl, '_blank');
-            }
+            if(confirm("Start Download?")) { window.open(cleanUrl, '_blank'); }
         }
 
-        // কপি ফাংশন
-        function copyLink(val, type) {
-            navigator.clipboard.writeText(val).then(() => {
-                alert(type + " Copied!");
-            });
+        // কপি ফাংশনসমূহ
+        function copyStreamPage() {
+            navigator.clipboard.writeText(window.location.href).then(() => alert("Watch Online Page Link Copied!"));
+        }
+        function copyDownloadLink() {
+            navigator.clipboard.writeText(cleanUrl).then(() => alert("Direct Download Link Copied!"));
+        }
+        function copyTelegramLink() {
+            navigator.clipboard.writeText("{{ file_get }}").then(() => alert("Telegram File Link Copied!"));
         }
 
         // এক্সটারনাল প্লেয়ার লজিক
@@ -337,12 +368,19 @@
         function changeLang(lang, btn) {
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            const txt = { bn: "সাউন্ড না আসলে প্লেয়ারের ভেতর থেকে ভলিউম বুস্ট চেক করুন। 📱🎧", hi: "যদি আওয়াজ না আসে, তো প্লেয়ারের ভেতর ভলিউম বুস্ট চেক করুন। 📱🎧", en: "If no sound, check volume boost inside player. 📱🎧" };
+            const txt = { 
+                bn: "সাউন্ড না আসলে প্লেয়ারের ভেতর থেকে ভলিউম বুস্ট চেক করুন। 📱🎧", 
+                hi: "अगर आवाज़ नहीं आ रही है, तो प्लेयर के अंदर वॉल्यूम बूस्ट चेक करें। 📱🎧", 
+                en: "If no sound, check volume boost inside the player. 📱🎧" 
+            };
             document.getElementById('instruction-text').innerHTML = `<i class="fa-solid fa-volume-high text-info"></i> ${txt[lang]}`;
         }
 
         function toggleDarkMode() { document.body.classList.toggle('light-mode'); }
-        function toggleEyeCare() { const o = document.getElementById('eyeCareOverlay'); o.style.display = (o.style.display === 'block' ? 'none' : 'block'); }
+        function toggleEyeCare() { 
+            const o = document.getElementById('eyeCareOverlay'); 
+            o.style.display = (o.style.display === 'block' ? 'none' : 'block'); 
+        }
     </script>
 </body>
 </html>
