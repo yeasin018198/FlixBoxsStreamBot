@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="icon" href="https://img.sanishtech.com/u/62e636411ff87f8ccbdd9eb50eb18279.png" type="image/x-icon">
     
-    <!-- Popunder Script (Managed via Config Below) -->
-    <script src="https://pl29898138.effectivecpmnetwork.com/3c/15/40/3c1540a05191092ea6cf482154a79038.js"></script>
+    <!-- Popunder Script -->
+    <script id="popunder-main-script" src="https://pl29898138.effectivecpmnetwork.com/3c/15/40/3c1540a05191092ea6cf482154a79038.js"></script>
 
     <!-- CSS & Icon Libraries -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -57,7 +57,6 @@
             padding: 10px 0;
             margin-bottom: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            touch-action: none; 
         }
         
         body.light-mode #player-section { background: #f0f2f5; }
@@ -70,7 +69,6 @@
             overflow: hidden; 
         }
 
-        /* Small Red Watermark Logic */
         .bold-watermark {
             font-weight: 900 !important;
             font-size: 11px !important;
@@ -99,14 +97,13 @@
 
         .control-btn { border: none; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); color: #fff; display: flex; align-items: center; justify-content: center; }
 
-        /* Sound Instruction Styling (Relocated Position) */
         .sound-fix-box { border: 2px solid var(--accent); padding: 12px; text-align: center; margin-top: 15px; border-radius: 12px; background: rgba(0, 255, 136, 0.03); display: block; }
         .lang-switch { display: flex; justify-content: center; gap: 8px; margin-bottom: 10px; }
         .lang-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--accent); color: var(--accent); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; }
         .lang-btn.active { background: var(--accent); color: #000; }
         #instruction-text { font-size: 13px; line-height: 1.5; font-weight: 600; color: #fff; }
 
-        /* Full page click capture for ads */
+        /* Popunder Trigger Overlay */
         #popunder-trigger { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2000; display: block; background: transparent; }
         #eyeCareOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 165, 0, 0.12); pointer-events: none; z-index: 9999; display: none; }
     </style>
@@ -155,13 +152,12 @@
                     </div>
                 </div>
                 <div class="col-6">
-                    <a href="javascript:void(0)" onclick="handlePopunder('tg_get_file', () => window.open('{{ file_get }}', '_blank'))" class="btn-glass btn-tg">
+                    <div onclick="handlePopunder('tg_get_file', () => window.open('{{ file_get }}', '_blank'))" class="btn-glass btn-tg">
                         <i class="fa-brands fa-telegram"></i> GET FILE
-                    </a>
+                    </div>
                 </div>
             </div>
 
-            <!-- RELOCATED SOUND FIX INSTRUCTION BOX (GREEN BOX POSITION) -->
             <div class="sound-fix-box" id="sound-fix-main">
                 <div class="lang-switch">
                     <button class="lang-btn active" id="bn-btn" onclick="setLanguage('bn')">বাংলা</button>
@@ -174,47 +170,39 @@
             </div>
         </div>
 
-        <!-- EXTERNAL PLAYERS WITH ICONS -->
         <div class="glass-card">
             <div class="small fw-bold mb-2 opacity-75 text-center">EXTERNAL PLAYERS</div>
             <div class="row g-2">
                 <div class="col-4">
                     <div onclick="handlePopunder('mx', () => play_intent('com.mxtech.videoplayer.ad'))" class="btn-glass small px-1">
-                        <i class="fas fa-play text-blue-400"></i> MX Player
+                        MX Player
                     </div>
                 </div>
                 <div class="col-4">
                     <div onclick="handlePopunder('vlc', () => play_intent('org.videolan.vlc'))" class="btn-glass small px-1">
-                        <i class="fas fa-video text-orange-500"></i> VLC Player
+                        VLC Player
                     </div>
                 </div>
                 <div class="col-4">
                     <div onclick="handlePopunder('playit', () => play_intent('com.playit.videoplayer'))" class="btn-glass small px-1">
-                        <i class="fas fa-play-circle text-green-400"></i> PlayIt
+                        PlayIt
                     </div>
                 </div>
             </div>
             <div class="row g-2 mt-1">
                 <div class="col-4">
                     <div onclick="handlePopunder('system_p', () => play_system())" class="btn-glass small px-1">
-                        <i class="fas fa-desktop text-yellow-400"></i> System
+                        System
                     </div>
                 </div>
                 <div class="col-4">
                     <div onclick="handlePopunder('kmp', () => play_intent('com.kmplayer'))" class="btn-glass small px-1">
-                        <i class="fas fa-film text-purple-400"></i> KM Player
+                        KM Player
                     </div>
                 </div>
                 <div class="col-4">
-                    <div onclick="handlePopunder('kodi', () => play_intent('org.xbmc.kodi'))" class="btn-glass small px-1">
-                        <i class="fas fa-border-all text-blue-300"></i> Kodi
-                    </div>
-                </div>
-            </div>
-            <div class="row g-2 mt-1">
-                <div class="col-12">
                     <div onclick="handlePopunder('nplayer_btn', () => play_nplayer())" class="btn-glass small px-1">
-                        <i class="fas fa-mobile-screen text-cyan-400"></i> nPlayer (PRO/iOS)
+                        nPlayer
                     </div>
                 </div>
             </div>
@@ -223,19 +211,19 @@
         <div class="glass-card">
             <div class="small fw-bold mb-2 opacity-75 text-center">SHARE LINKS</div>
             <div class="row g-2">
-                <div class="col-4"><div onclick="handlePopunder('sh_vid', () => shareAPI('Video Link', window.location.href))" class="btn-glass small px-1"><i class="fa-solid fa-share-nodes"></i> Video</div></div>
-                <div class="col-4"><div onclick="handlePopunder('sh_file', () => shareAPI('Download Link', '{{ file_url }}'))" class="btn-glass small px-1"><i class="fa-solid fa-link"></i> File</div></div>
-                <div class="col-4"><div onclick="handlePopunder('sh_tg', () => shareAPI('TG Get File Link', '{{ file_get }}'))" class="btn-glass small px-1"><i class="fa-brands fa-telegram"></i> TG Get</div></div>
+                <div class="col-4"><div onclick="handlePopunder('sh_vid', () => shareAPI('Video Link', window.location.href))" class="btn-glass small px-1">Video</div></div>
+                <div class="col-4"><div onclick="handlePopunder('sh_file', () => shareAPI('Download Link', '{{ file_url }}'))" class="btn-glass small px-1">File</div></div>
+                <div class="col-4"><div onclick="handlePopunder('sh_tg', () => shareAPI('TG Link', '{{ file_get }}'))" class="btn-glass small px-1">TG Get</div></div>
             </div>
         </div>
 
         <div class="glass-card">
             <div class="fw-bold mb-2"><i class="fa-brands fa-telegram text-info"></i> Join Our Channels</div>
             <div class="tg-grid">
-                <a href="https://t.me/FlixBoxsOfficial" target="_blank" onclick="handlePopunder('tg_c1')" class="tg-btn"><i class="fa-solid fa-bullhorn"></i> FlixBoxs Official</a>
-                <a href="http://t.me/FlixBoxs" target="_blank" onclick="handlePopunder('tg_c2')" class="tg-btn"><i class="fa-solid fa-film"></i> FlixBoxs</a>
-                <a href="http://t.me/FlixBoxsChat" target="_blank" onclick="handlePopunder('tg_c3')" class="tg-btn"><i class="fa-solid fa-headset"></i> FlixBoxs Chat</a>
-                <a href="https://flixboxsmovies.blogspot.com/" target="_blank" onclick="handlePopunder('tg_c4')" class="tg-btn"><i class="fa-solid fa-database"></i> FlixBoxs Website</a>
+                <a href="https://t.me/FlixBoxsOfficial" target="_blank" class="tg-btn">Official</a>
+                <a href="http://t.me/FlixBoxs" target="_blank" class="tg-btn">Movies</a>
+                <a href="http://t.me/FlixBoxsChat" target="_blank" class="tg-btn">Support</a>
+                <a href="https://flixboxsmovies.blogspot.com/" target="_blank" class="tg-btn">Website</a>
             </div>
         </div>
 
@@ -243,76 +231,59 @@
     </div>
 
     <script>
-        // ==========================================
-        //         ৪ টি প্রধান এড/চেঞ্জ কমান্ড
-        // ==========================================
+        // CONFIGURATION
         const CONFIG = {
-            // ১. নোটিশ টেক্সট পরিবর্তন (এখানে লেখা দিলে উপরের নোটিশ বদলে যাবে)
             notice: "⚡ 5-Way Skip Active | Swipe Volume/Brightness | 4 Official Channels | Popunder Ads Active | Join @flixboxs",
-
-            // ২. আনলিমিটেড ডিরেক্ট লিঙ্ক অ্যাড (এখানে কমা দিয়ে যত খুশি লিঙ্ক দিতে পারেন)
             directAds: [
                 "https://www.effectivecpmnetwork.com/qw8kn1x7h?key=5fdb7c5ecd8aff08f9ffb43334a9d3e6",
                 "https://www.effectivecpmnetwork.com/xqmb731x1?key=0267816362fc4320de630e064b317db1"
             ],
-
-            // ৩. পপান্ডার অ্যাড স্ক্রিপ্ট লিঙ্ক চেঞ্জ (JS Link)
-            popunderJS: "https://pl29898138.effectivecpmnetwork.com/3c/15/40/3c1540a05191092ea6cf482154a79038.js"
-",
-
-            // ৪. সাউন্ড ইনস্ট্রাকশন টেক্সট চেঞ্জ (তিন ভাষার লেখা)
+            popunderJS: "https://pl29898138.effectivecpmnetwork.com/3c/15/40/3c1540a05191092ea6cf482154a79038.js",
             soundText: {
-                bn: "কোন মুভির বা কোন ফাইল এর যদি সাউন্ড না আসে তা হলে নিচের দেওয়া প্লেয়ারে স্ট্রিম গুলা দেখতে অনুরোধ করা হলো। 📱🎧",
-                hi: "यदि किसी मूवी या फ़ाइल में आवाज़ नहीं आ रही है, तो कृपया नीचे दिए गए प्लेयर में स्ट्रीम देखें। 📱🎧",
-                en: "If any movie or file has no sound, please watch the streams in the players given below. 📱🎧"
+                bn: "কোন মুভির বা কোন ফাইল এর যদি সাউন্ড না আসে তা হলে উপরের দেওয়া প্লেয়ারে স্ট্রিম গুলা দেখতে অনুরোধ করা হলো। 📱🎧",
+                hi: "यदि किसी मूवी या फ़ाइल में आवाज़ नहीं आ रही है, तो कृपया ऊपर दिए गए प्लेयर में स्ट्रीम देखें। 📱🎧",
+                en: "If any movie or file has no sound, please watch the streams in the player given above. 📱🎧"
             }
         };
 
-        // ==========================================
-        //         ডিলেট/রিমুভ করার কমান্ডসমূহ
-        // ==========================================
-        // নোটিশ রিমুভ করতে চাইলে: CONFIG.notice = "";
-        // অ্যাড রিমুভ করতে চাইলে: CONFIG.directAds = [];
-        // সাউন্ড বক্স পুরোটা রিমুভ করতে চাইলে নিচে ফাংশন কল করুন: deleteSoundBox();
-        
-        function deleteNotice() {
-            document.getElementById('notice-container').style.display = 'none';
-        }
-        function deleteSoundBox() {
-            document.getElementById('sound-fix-main').style.display = 'none';
-        }
-        function deletePopunderScript() {
-            let s = document.getElementById('popunder-main-script');
-            if(s) s.remove();
-        }
-
         // Initialize Dynamic Configs
-        if(CONFIG.notice === "") { deleteNotice(); } else { document.getElementById('marquee-element').innerText = CONFIG.notice; }
-        document.getElementById('popunder-main-script').src = CONFIG.popunderJS;
-
-        // Language Switcher Logic
+        document.getElementById('marquee-element').innerText = CONFIG.notice;
+        
         function setLanguage(lang) {
-            const textDisplay = document.getElementById('instruction-text');
-            const btns = document.querySelectorAll('.lang-btn');
-            btns.forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(lang + '-btn').classList.add('active');
-
-            textDisplay.innerHTML = `<i class="fa-solid fa-volume-high text-success"></i> ${CONFIG.soundText[lang]}`;
+            document.getElementById('instruction-text').innerHTML = `<i class="fa-solid fa-volume-high text-success"></i> ${CONFIG.soundText[lang]}`;
         }
-        // Run Default Language
         setLanguage('bn');
+
+        // Ad Logic and Button Click Fix
+        let linkIndex = 0;
+        function handlePopunder(btnId, callback) {
+            // First click on screen or any button triggers the ad
+            if (CONFIG.directAds.length > 0) {
+                try {
+                    window.open(CONFIG.directAds[linkIndex % CONFIG.directAds.length], '_blank');
+                    linkIndex++;
+                } catch(e) {}
+            }
+
+            // Remove the invisible overlay on first click so buttons become clickable
+            if(document.getElementById('popunder-trigger')) {
+                document.getElementById('popunder-trigger').remove();
+            }
+
+            if (callback) callback();
+        }
 
         function forceDownload(url) {
             let secureUrl = url.replace("http://", "https://");
             const link = document.createElement('a');
             link.href = secureUrl;
-            link.setAttribute('download', '');
-            link.setAttribute('target', '_blank');
-            link.setAttribute('rel', 'noopener noreferrer');
+            link.target = '_blank';
+            link.download = '';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            setTimeout(() => { alert("Download Starting..."); }, 500);
         }
 
         async function shareAPI(title, link) {
@@ -320,29 +291,10 @@
             else { navigator.clipboard.writeText(link); alert("Link Copied!"); }
         }
 
-        let linkIndex = 0;
-        const cooldowns = {}; 
-
-        function handlePopunder(btnId, callback) {
-            const now = Date.now();
-            const cooldownTime = 1800000; 
-
-            if (CONFIG.directAds.length > 0 && (!cooldowns[btnId] || (now - cooldowns[btnId] > cooldownTime))) {
-                window.open(CONFIG.directAds[linkIndex % CONFIG.directAds.length], '_blank');
-                linkIndex++;
-                cooldowns[btnId] = now;
-                
-                if(btnId === 'global_trigger') {
-                    document.getElementById('popunder-trigger').style.display = 'none';
-                }
-            }
-            if (callback) callback();
-        }
-
+        // ARTPLAYER INITIALIZATION
         function initPlayer() {
             document.getElementById('watchBtn').style.display = 'none';
-            const artDiv = document.getElementById('artplayer');
-            artDiv.style.display = 'block';
+            document.getElementById('artplayer').style.display = 'block';
 
             const art = new Artplayer({
                 container: '#artplayer',
@@ -357,16 +309,9 @@
                     {
                         position: 'right',
                         html: '<i class="fa-solid fa-arrows-rotate"></i>',
-                        tooltip: 'Fullscreen Rotation',
                         click: function () {
                             if (!art.fullscreen) { art.fullscreen = true; }
-                            if (screen.orientation && screen.orientation.lock) {
-                                screen.orientation.lock('landscape').catch(function(error) {
-                                    art.rotate = (art.rotate === 0) ? 90 : 0;
-                                });
-                            } else {
-                                art.rotate = (art.rotate === 0) ? 90 : 0;
-                            }
+                            art.rotate = (art.rotate === 0) ? 90 : 0;
                         },
                     },
                     { position: 'right', html: '<i class="fa-solid fa-rotate-left"></i>', click: () => art.backward = 10 },
@@ -374,6 +319,7 @@
                 ]
             });
 
+            // 400% Sound Boost Logic
             art.on('play', () => {
                 if (!window.audioBoosted) {
                     try {
@@ -381,7 +327,7 @@
                         const ctx = new AudioCtx();
                         const source = ctx.createMediaElementSource(art.video);
                         const gainNode = ctx.createGain();
-                        gainNode.gain.value = 4;
+                        gainNode.gain.value = 4; 
                         source.connect(gainNode);
                         gainNode.connect(ctx.destination);
                         window.audioBoosted = true;
@@ -390,6 +336,7 @@
                 }
             });
 
+            // Brightness & Volume Swipes
             let startY = 0;
             const container = document.querySelector('#artplayer');
             container.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; });
@@ -399,34 +346,20 @@
                 const x = e.touches[0].clientX - rect.left;
                 
                 if (x < rect.width / 2) { 
-                    const currentFilter = art.video.style.filter || "brightness(1) contrast(1) saturate(1)";
+                    const currentFilter = art.video.style.filter || "brightness(1)";
                     const bMatch = currentFilter.match(/brightness\(([^)]+)\)/);
                     let b = bMatch ? parseFloat(bMatch[1]) : 1;
-                    let newBrightness = Math.min(Math.max(b + (deltaY / 800), 0.4), 2.0);
-                    let newContrast = 1 + (newBrightness - 1) * 0.7; 
-                    let newSaturate = 1 + (newBrightness - 1) * 1.1; 
-                    let newSepia = (newBrightness > 1.2) ? (newBrightness - 1.2) * 0.1 : 0; 
-                    art.video.style.filter = `brightness(${newBrightness}) contrast(${newContrast}) saturate(${newSaturate}) sepia(${newSepia})`;
-                    art.notice.show = `Brightness: ${Math.round(newBrightness * 100)}%`;
+                    let newB = Math.min(Math.max(b + (deltaY / 800), 0.4), 2.0);
+                    art.video.style.filter = `brightness(${newB})`;
+                    art.notice.show = `Brightness: ${Math.round(newB * 100)}%`;
                 } else { 
                     art.volume = Math.min(Math.max(art.volume + (deltaY / 600), 0), 1);
                 }
                 startY = e.touches[0].clientY;
             });
-
-            art.on('ready', () => { art.autoSize(); });
         }
 
-        function toggleDarkMode() {
-            document.body.classList.toggle('light-mode');
-            const icon = document.querySelector('#themeToggle i');
-            icon.className = document.body.classList.contains('light-mode') ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
-        }
-        function toggleEyeCare() {
-            const overlay = document.getElementById('eyeCareOverlay');
-            overlay.style.display = (overlay.style.display === 'block') ? 'none' : 'block';
-        }
-
+        // App Intents
         function play_intent(pkg) { 
             let url = '{{ file_url }}'.replace("http://", "https://");
             window.location.href = `intent:${url}#Intent;package=${pkg};type=video/*;end`; 
@@ -437,11 +370,15 @@
         }
         function play_nplayer() {
             let url = '{{ file_url }}'.replace("http://", "https://");
-            if (/Android/i.test(navigator.userAgent)) {
-                window.location.href = `intent:${url}#Intent;action=android.intent.action.VIEW;type=video/*;package=com.newin.nplayer.pro;end`;
-            } else {
-                window.location.href = `nplayer-${url}`;
-            }
+            window.location.href = `nplayer-${url}`;
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('light-mode');
+        }
+        function toggleEyeCare() {
+            const overlay = document.getElementById('eyeCareOverlay');
+            overlay.style.display = (overlay.style.display === 'block') ? 'none' : 'block';
         }
     </script>
 </body>
