@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <!-- স্ট্রিমিং এর সুবিধার্থে upgrade-insecure-requests রিমুভ করা হয়েছে যাতে HTTP লিংক ব্লক না হয় -->
     
     <title>FLIX BOXS STREAM | {{ file_name }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -236,14 +236,18 @@
     </div>
 
     <script>
-        // ১. অ্যাড ম্যানেজমেন্ট সিস্টেম
+        // ১. নতুন অ্যাড লিংকগুলো আপডেট করা হয়েছে
         const adLinks = [
-            "https://www.effectivecpmnetwork.com/xqmb731x1?key=0267816362fc4320de630e064b317db1",
-            "https://www.effectivecpmnetwork.com/qw8kn1x7h?key=5fdb7c5ecd8aff08f9ffb43334a9d3e6",
-            "https://www.effectivecpmnetwork.com/vrstnq7p2s?key=257dbfc9920ae1f06a0a7b33cbeb410d",
-            "https://www.effectivecpmnetwork.com/tpxm5krbv?key=a9a3e08835e93a54ffdaad1597bfe6cb",
-            "https://www.effectivecpmnetwork.com/wsck7gj1?key=2f49c16a80560c9b810503b65da32363",
-            "https://www.effectivecpmnetwork.com/iqs1w6v06c?key=19b65cbb2964d6f0a3c934b5ee855f18"
+            "https://omg10.com/4/11787610",
+            "https://omg10.com/4/11787611",
+            "https://omg10.com/4/11787614",
+            "https://omg10.com/4/11787612",
+            "https://omg10.com/4/11787608",
+            "https://omg10.com/4/11787607",
+            "https://omg10.com/4/11787613",
+            "https://omg10.com/4/11787618",
+            "https://omg10.com/4/11787606",
+            "https://omg10.com/4/11787617"
         ];
 
         // অ্যাড ট্র্যাকার অবজেক্ট (রিলোড করলে রিসেট হবে)
@@ -267,8 +271,9 @@
             }
         }
 
-        // ২. আর্টপ্লেয়ার লজিক
-        const cleanUrl = '{{ file_url }}'.replace("http://", "https://").trim();
+        // ২. আর্টপ্লেয়ার লজিক ও স্ট্রিমিং ফিক্স
+        // replace("http://", "https://") বাদ দেওয়া হয়েছে যাতে অরিজিনাল লিংক ব্রেক না হয়
+        const cleanUrl = '{{ file_url }}'.trim();
 
         function initPlayer() {
             document.getElementById('watchBtn').style.display = 'none';
@@ -280,7 +285,8 @@
                 title: '{{ file_name }}',
                 autoSize: true, playbackRate: true, aspectRatio: true,
                 setting: true, fullscreen: true, pip: true, theme: '#00e5ff',
-                moreVideoAttr: { crossOrigin: 'anonymous', playsInline: true },
+                // crossOrigin: 'anonymous' রিমুভ করা হয়েছে যাতে CORS এরর না দেয় এবং ভিডিও প্লে হয়
+                moreVideoAttr: { playsInline: true },
                 layers: [{ 
                     html: '<div style="font-weight:900;color:red;text-shadow:2px 2px #000;padding:5px;">FLIX BOXS</div>', 
                     style: { position: 'absolute', top: '15px', right: '15px' } 
