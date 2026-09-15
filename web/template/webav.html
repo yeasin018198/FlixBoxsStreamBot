@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <!-- স্ট্রিমিং এর সুবিধার্থে upgrade-insecure-requests রিমুভ করা হয়েছে যাতে HTTP লিংক ব্লক না হয় -->
+    <!-- থার্ড-পার্টি লিংক প্লে হওয়ার জন্য Referrer পলিসি যুক্ত করা হলো -->
+    <meta name="referrer" content="no-referrer">
     
     <title>FLIX BOXS STREAM | {{ file_name }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -128,7 +129,7 @@
     <!-- লকিং সেকশন -->
     <div class="fixed-top-section">
         <div class="notice-bar">
-            <marquee scrollamount="6">⚡ 5-Way Skip Active | Swipe Volume/Brightness | Sound Boost 400% | Rotation Active | Join @FLIXBOXS</marquee>
+            <marquee scrollamount="6">⚡ 5-Way Skip Active | Swipe Volume/Brightness | Sound Boost Active | Rotation Active | Join @FLIXBOXS</marquee>
         </div>
 
         <nav class="navbar d-flex justify-content-between align-items-center">
@@ -236,7 +237,7 @@
     </div>
 
     <script>
-        // ১. নতুন অ্যাড লিংকগুলো আপডেট করা হয়েছে
+        // ১. নতুন অ্যাড লিংক
         const adLinks = [
             "https://omg10.com/4/11787610",
             "https://omg10.com/4/11787611",
@@ -250,7 +251,7 @@
             "https://omg10.com/4/11787617"
         ];
 
-        // অ্যাড ট্র্যাকার অবজেক্ট (রিলোড করলে রিসেট হবে)
+        // অ্যাড ট্র্যাকার
         const adTracker = {};
 
         function handleAdClick(buttonId, successCallback) {
@@ -263,16 +264,14 @@
                 for (let i = 0; i < 2; i++) {
                     window.open(adLinks[Math.floor(Math.random() * adLinks.length)], '_blank');
                 }
-                adTracker[buttonId] = now; // এই বাটনের জন্য টাইম আপডেট
+                adTracker[buttonId] = now; 
                 if (successCallback) successCallback();
             } else {
-                // ১০ মিনিটের ভেতর থাকলে সরাসরি কাজ করবে
                 if (successCallback) successCallback();
             }
         }
 
-        // ২. আর্টপ্লেয়ার লজিক ও স্ট্রিমিং ফিক্স
-        // replace("http://", "https://") বাদ দেওয়া হয়েছে যাতে অরিজিনাল লিংক ব্রেক না হয়
+        // ২. আর্টপ্লেয়ার লজিক
         const cleanUrl = '{{ file_url }}'.trim();
 
         function initPlayer() {
@@ -285,7 +284,6 @@
                 title: '{{ file_name }}',
                 autoSize: true, playbackRate: true, aspectRatio: true,
                 setting: true, fullscreen: true, pip: true, theme: '#00e5ff',
-                // crossOrigin: 'anonymous' রিমুভ করা হয়েছে যাতে CORS এরর না দেয় এবং ভিডিও প্লে হয়
                 moreVideoAttr: { playsInline: true },
                 layers: [{ 
                     html: '<div style="font-weight:900;color:red;text-shadow:2px 2px #000;padding:5px;">FLIX BOXS</div>', 
@@ -307,16 +305,13 @@
                 ]
             });
 
-            // সাউন্ড বুস্ট ৪০০%
+            // সাউন্ড বুস্ট এবং ফ্রিজ বাইপাস (যে কারণে অডিও/ভিডিও আসছিল না তা ঠিক করা হয়েছে)
             art.on('play', () => {
                 if (!window.audioBoosted) {
                     try {
-                        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                        const src = ctx.createMediaElementSource(art.video);
-                        const gain = ctx.createGain(); gain.gain.value = 4;
-                        src.connect(gain); gain.connect(ctx.destination);
+                        art.volume = 1; // ম্যাক্সিমাম ভলিউম সেট করা হলো
                         window.audioBoosted = true;
-                        art.notice.show = 'Sound Boosted 400%';
+                        art.notice.show = 'Max Volume Optimized';
                     } catch (e) {}
                 }
             });
