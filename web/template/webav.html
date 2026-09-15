@@ -1,476 +1,387 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{file_name}} - ᴘʀɪᴍᴇ ɴᴇᴛᴡᴏʀᴋ</title>
-    <link class="fav-icon" rel="icon" href="https://i.ibb.co/Hh4kF2b/icon.png" type="image/x-icon">
+    <meta charset="UTF-8" />
+    <!-- থার্ড-পার্টি লিংক প্লে হওয়ার জন্য Referrer পলিসি যুক্ত করা হলো -->
+    <meta name="referrer" content="no-referrer">
     
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght=500;600;700;800&family=Poppins:wght=400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>FLIX BOXS STREAM | {{ file_name }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="icon" href="https://img.sanishtech.com/u/62e636411ff87f8ccbdd9eb50eb18279.png" type="image/x-icon">
     
-    <!-- Plyr CSS -->
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- CSS & Icon Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
+    <!-- Video Player Library -->
+    <script src="https://cdn.jsdelivr.net/npm/artplayer/dist/artplayer.js"></script>
+
     <style>
         :root {
-            --bg-body: #0b0f15;
-            --bg-card: #121824;
-            --bg-btn: #1a2232;
-            --text-primary: #ffffff;
-            --border-accent: #00e5ff;
-        }
-        body.light {
-            --bg-body: #f1f5f9;
-            --bg-card: #ffffff;
-            --bg-btn: #e2e8f0;
-            --text-primary: #1e293b;
-            --border-accent: #2563eb;
+            --accent: #00e5ff;
+            --bg-dark: #0b0f15;
+            --card-dark: #121824;
+            --rose: #e11d48;
+            --blue: #2563eb;
         }
 
-        :root {
-            --plyr-color-main: var(--border-accent);
-            --plyr-range-track-height: 4px; 
-            --plyr-range-thumb-height: 14px; 
-        }
-        .plyr__progress {
-            left: 0 !important; right: 0 !important; bottom: 0 !important;
-            position: absolute !important; width: 100% !important; padding: 0 !important; margin: 0 !important; z-index: 10;
-        }
-        .plyr--video .plyr__controls { padding-bottom: 15px !important; }
-
-        body { 
-            background-color: var(--bg-body) !important; color: var(--text-primary) !important; 
-            font-family: 'Poppins', sans-serif; transition: all 0.4s ease;
+        body {
+            background: var(--bg-dark);
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            margin: 0; padding: 0;
+            overflow-x: hidden;
+            overscroll-behavior-y: contain;
+            transition: background 0.3s;
         }
 
-        @keyframes bounce-icon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
-        @keyframes pulse-icon { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
-        @keyframes wiggle-icon { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
-        @keyframes beat-icon { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.25); } 30% { transform: scale(1); } 45% { transform: scale(1.25); } 60% { transform: scale(1); } }
-
-        .anim-bounce { animation: bounce-icon 2s infinite ease-in-out; }
-        .anim-pulse { animation: pulse-icon 1.5s infinite ease-in-out; }
-        .anim-wiggle { animation: wiggle-icon 2s infinite linear; }
-        .anim-beat { animation: beat-icon 2.5s infinite ease-in-out; }
-
-        .btn-hover { transition: all 0.3s ease; }
-        .btn-hover:hover { transform: translateY(-2px); filter: brightness(1.2); }
-
-        .theme-wrapper {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            z-index: 10000; 
+        /* লকিং সেকশন: প্লেয়ার এবং হেডার লক থাকবে */
+        .fixed-top-section {
+            position: sticky;
+            top: 0;
+            z-index: 2000;
+            background: var(--bg-dark);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.9);
         }
 
-        .theme-btn {
-            background: var(--bg-card);
-            border: 2px solid var(--border-accent);
-            padding: 8px 12px;
-            border-radius: 50px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 11px;
-            font-weight: 800;
-            color: var(--text-primary);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            backdrop-filter: blur(10px);
+        .notice-bar { 
+            background: linear-gradient(90deg, #00e5ff, #2563eb, #e11d48, #00e5ff); 
+            background-size: 300% 100%;
+            animation: gradientMove 3s linear infinite;
+            color: #000; padding: 10px; font-weight: 800; text-align: center; 
+            font-size: 11px; position: relative;
+        }
+        @keyframes gradientMove { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+
+        .navbar { 
+            padding: 12px 20px; background: rgba(0,0,0,0.6); 
+            backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        @media (max-width: 480px) {
-            .theme-btn span {
-                display: none; 
-            }
-            .theme-btn {
-                padding: 10px; 
-            }
-            .theme-wrapper {
-                top: 10px;
-                right: 10px;
-            }
+        #player-section {
+            width: 100%; border-bottom: 3px solid var(--accent);
+            background: #000; overflow: hidden;
+            animation: glowEffect 2s infinite alternate;
+        }
+        @keyframes glowEffect { from { box-shadow: 0 0 5px var(--accent); } to { box-shadow: 0 0 15px var(--blue); } }
+
+        .artplayer-app { width: 100%; aspect-ratio: 16/9; touch-action: none; }
+
+        .main-container { max-width: 600px; margin: 0 auto; padding: 20px 15px; }
+
+        .glass-card { 
+            background: var(--card-dark); padding: 18px; border-radius: 18px; 
+            margin-bottom: 15px; border: 1px solid rgba(128, 128, 128, 0.2);
+            transition: 0.3s;
         }
 
-        .fixed-copyright {
-            position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg-body); 
-            backdrop-filter: blur(10px); text-align: center; padding: 10px 0; font-size: 11px; font-weight: bold;
-            border-top: 1px solid rgba(128, 128, 128, 0.2); z-index: 1000;
+        /* বাটন ডিজাইন */
+        .btn-prime { 
+            display: flex; align-items: center; justify-content: center; gap: 8px; 
+            padding: 13px; border-radius: 50px; font-weight: 700; margin-bottom: 10px; 
+            transition: 0.3s; cursor: pointer; border: none;
+            color: #fff; text-decoration: none !important; font-size: 13px;
         }
-        .dmca-floating { position: fixed; bottom: 65px; right: 20px; z-index: 999; }
-        @keyframes dmca-color {
-            0%, 100% { background-color: #00e5ff; color: #000; box-shadow: 0 0 20px rgba(0, 229, 255, 0.5); }
-            50% { background-color: #2563eb; color: #fff; box-shadow: 0 0 20px rgba(37, 99, 235, 0.6); }
+        .btn-prime:hover { transform: translateY(-3px); filter: brightness(1.2); }
+        
+        .btn-fast { background: var(--rose) !important; animation: pulse 2s infinite; }
+        .btn-normal { background: var(--blue) !important; }
+        .btn-tg { background: #1a2232; border: 1px solid #2563eb; color: #2563eb; }
+
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+
+        /* শেয়ার আইকন ডিজাইন */
+        .share-icons-row {
+            display: flex; justify-content: space-around; align-items: center;
+            padding: 10px 0; margin-top: 10px;
         }
-        .dmca-btn { animation: dmca-color 4s infinite ease-in-out; }
-
-        .bg-card-theme { background-color: var(--bg-card) !important; border-color: rgba(128, 128, 128, 0.2) !important; }
-        .bg-btn-theme { background-color: var(--bg-btn) !important; border-color: rgba(128, 128, 128, 0.2) !important; }
-
-        .plyr__controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .share-icon-btn {
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+            cursor: pointer; transition: 0.3s;
         }
-
-        .custom-player-btns {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            color: white;
-            font-size: 18px;
+        .share-icon-btn:hover { transform: scale(1.1); }
+        .icon-circle {
+            width: 50px; height: 50px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: #fff;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--accent);
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
         }
+        .icon-label { font-size: 10px; font-weight: 800; color: var(--accent); text-transform: uppercase; }
 
-        .custom-player-btns button {
-            background: none;
-            border: none;
-            color: #00e5ff;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
+        .sound-fix-box { border: 2px solid var(--accent); padding: 15px; border-radius: 15px; background: rgba(0, 229, 255, 0.03); }
+        .lang-btn { background: #1a2232; border: 1px solid var(--accent); color: var(--accent); padding: 5px 15px; border-radius: 20px; font-size: 12px; }
+        .lang-btn.active { background: var(--accent); color: #000; }
 
-        .custom-player-btns button:active { transform: scale(0.9); }
-
-        #brightness-popup {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.85);
-            padding: 15px 25px;
-            border-radius: 15px;
-            border: 1px solid #00e5ff;
-            z-index: 200;
-            display: none; 
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
-        }
-
-        #brightness-popup span { font-size: 10px; font-weight: bold; color: #00e5ff; }
-
-        #br-slider {
-            -webkit-appearance: none;
-            width: 150px;
-            height: 4px;
-            background: #333;
-            border-radius: 5px;
-            outline: none;
-        }
-
-        #br-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 15px; height: 15px;
-            background: #00e5ff;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-        #brightness-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: black;
-            pointer-events: none;
-            opacity: 0; 
-            z-index: 1;
-        }
+        /* overlays */
+        #eyeCareOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 165, 0, 0.1); pointer-events: none; z-index: 9999; display: none; }
+        .light-mode { background: #eef2f7; color: #000; }
+        .light-mode .glass-card { background: #fff; border-color: #ccc; }
+        .light-mode .fixed-top-section { background: #fff; }
     </style>
 </head>
-<body class="antialiased pb-32">
+<body>
 
-    <!-- Theme Toggle -->
-    <div class="theme-wrapper">
-    <button id="theme-toggle-btn" class="theme-btn">
-        <i class="fa-solid fa-circle-half-stroke" id="theme-icon"></i>
-        <span id="theme-text">LIGHT MODE</span>
-    </button>
-    </div>
+    <div id="eyeCareOverlay"></div>
 
-    <!-- Header Section -->
-    <header class="flex flex-col items-center pt-14 pb-4"> 
-    <h1 class="text-3xl md:text-4xl font-extrabold flex items-center gap-3">
-        <i class="fas fa-clapperboard text-rose-600 anim-beat"></i>
-        <div><span class="text-pink-400">ᴘʀɪᴍᴇ</span> <span class="text-[#00e5ff]">ɴᴇᴛᴡᴏʀᴋ</span></div>
-    </h1>
-        <p class="text-[12px] text-gray-400 font-bold mt-1 anim-pulse uppercase tracking-widest">
-            <i class="fas fa-bolt"></i> 𝐏𝐫𝐢𝐦𝐞 𝐒𝐭𝐫𝐞𝐚𝐦𝐢𝐧𝐠 𝐏𝐥𝐚𝐭𝐟𝐨𝐫𝐦
-        </p>
-    </header>
-
-    <!-- Main Container -->
-    <main class="w-full max-w-[600px] mx-auto px-4 z-10 relative">
-        <div class="bg-card-theme rounded-xl overflow-hidden border shadow-2xl mb-6 flex flex-col relative">
-            <div class="p-4 border-b bg-card-theme">
-                <h2 class="text-[#00e5ff] text-[15px] font-bold flex items-start gap-2">
-                    <i class="fas fa-play-circle mt-1 anim-pulse"></i> {{file_name}}
-                </h2>
-            </div>
-
-            <!-- Video Player -->
-            <div class="relative w-full aspect-video bg-black overflow-hidden">
-                <video id="player" playsinline controls preload="auto">
-                    <source src="{{file_url}}" type="video/mp4" />
-                </video>
-            </div>
-
-            <div class="flex justify-between p-3 px-5 text-[12px] font-black tracking-widest bg-card-theme">
-                <div class="text-gray-400"><span class="text-green-500">SIZE:</span> {{file_size}}</div>
-                <div class="text-gray-400"><span class="text-green-500">TIME:</span> <span id="clock">00:00:00</span></div>
-            </div>
+    <!-- লকিং সেকশন -->
+    <div class="fixed-top-section">
+        <div class="notice-bar">
+            <marquee scrollamount="6">⚡ 5-Way Skip Active | Swipe Volume/Brightness | Sound Boost Active | Rotation Active | Join @FLIXBOXS</marquee>
         </div>
 
-        <!-- Buttons Section -->
-        <div class="space-y-4">
-            <div class="grid grid-cols-2 gap-3">
-                <button onclick="streamDownload()" class="btn-hover bg-[#e11d48] text-white rounded-full py-2.5 font-bold text-sm shadow-lg">
-                    <i class="fas fa-bolt anim-bounce text-yellow-300 mr-1"></i> DOWNLOAD
-                </button>
-                <button onclick="watchOnline()" class="btn-hover bg-[#2563eb] text-white rounded-full py-2.5 font-bold text-sm shadow-lg">
-                    <i class="fas fa-folder-open anim-wiggle mr-1"></i> WATCH ONLINE
-                </button>
+        <nav class="navbar d-flex justify-content-between align-items-center">
+            <div class="fw-bold fs-4 animate__animated animate__pulse animate__infinite">
+                <i class="fa-solid fa-clapperboard text-danger"></i> <span style="color: var(--accent);">FLIX BOXS</span>
             </div>
+            <div class="d-flex gap-2">
+                <button class="btn btn-dark rounded-circle" onclick="handleAdClick('darkBtn', toggleDarkMode)"><i class="fa-solid fa-circle-half-stroke"></i></button>
+                <button class="btn btn-dark rounded-circle" onclick="handleAdClick('eyeBtn', toggleEyeCare)"><i class="fa-solid fa-eye"></i></button>
+            </div>
+        </nav>
 
-            <div class="grid grid-cols-2 gap-3">
-                <button onclick="vlc_player()" class="btn-hover bg-btn-theme border text-gray-200 rounded-full py-2 text-[12px] font-bold">
-                    <i class="fas fa-video anim-beat text-orange-500 mr-1"></i> VLC PLAYER
-                </button>
-                <button onclick="mx_player()" class="btn-hover bg-btn-theme border text-gray-200 rounded-full py-2 text-[12px] font-bold">
-                    <i class="fas fa-play anim-pulse text-blue-400 mr-1"></i> MX PLAYER
-                </button>
+        <div id="player-section">
+            <div id="watchBtn" onclick="handleAdClick('playerMain', initPlayer)" style="width:100%; aspect-ratio:16/9; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer;">
+                <i class="fa-solid fa-circle-play fa-4x text-info mb-2"></i>
+                <h6 class="fw-bold m-0 text-info uppercase">WATCH ONLINE (@FLIXBOXS)</h6>
             </div>
-            
-            <div class="grid grid-cols-2 gap-3">
-                <button onclick="playit_player()" class="btn-hover bg-btn-theme border text-green-400 rounded-full py-2 text-[12px] font-bold">
-                    <i class="fas fa-play-circle anim-beat mr-1"></i> PLAYIT
-                </button>
-                <button onclick="system_player()" class="btn-hover bg-btn-theme border text-yellow-400 rounded-full py-2 text-[12px] font-bold">
-                    <i class="fas fa-desktop anim-pulse mr-1"></i> SYSTEM
-                </button>
-            </div>
-
-            <div class="grid grid-cols-3 gap-2">
-                <button onclick="km_player()" class="btn-hover bg-btn-theme border text-gray-200 rounded-full py-2 text-[10px] font-bold">
-                    <i class="fas fa-film anim-bounce text-purple-400 mr-1"></i> KM PLAYER
-                </button>
-                <button onclick="kodi_player()" class="btn-hover bg-btn-theme border text-gray-200 rounded-full py-2 text-[10px] font-bold">
-                    <i class="fas fa-border-all anim-pulse text-blue-300 mr-1"></i> KODI
-                </button>
-                <button onclick="n_player()" class="btn-hover bg-btn-theme border text-cyan-400 rounded-full py-2 text-[10px] font-bold">
-                    <i class="fas fa-mobile-screen anim-wiggle mr-1"></i> NPLAYER
-                </button>
-            </div>
-        </div>
-    </main>
-
-    
-    <div class="dmca-floating">
-        <button onclick="openModal()" class="dmca-btn px-6 py-2 rounded-full font-black text-xs uppercase shadow-2xl border border-white/20">
-            <i class="fas fa-shield-halved anim-wiggle mr-1"></i> DMCA
-        </button>
-    </div>
-
-    
-    <div class="fixed-copyright">
-        © 2022-2026 <a href="https://t.me/PrimeXBots" class="text-[#00e5ff] underline">ᴘʀɪᴍᴇXʙᴏᴛꜱ</a> | ꜱᴇᴄᴜʀᴇ ʙʏ ᴘʀɪᴍᴇ ɴᴇᴛᴡᴏʀᴋ 🤝
-    </div>
-
-    <!-- DMCA Modal (Restored Everything) -->
-    <div id="infoModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[2000] hidden items-center justify-center p-4">
-        <div id="modalBox" class="bg-[#121824] border-2 border-[#1f2937] rounded-2xl w-full max-w-lg overflow-hidden flex flex-col shadow-2xl">
-            <div class="p-4 border-b border-gray-800 flex justify-between items-center bg-[#121824]">
-                <h3 class="font-bold text-[#00e5ff] italic uppercase tracking-wider">
-                    <i class="fas fa-circle-info mr-2"></i> Bot Information
-                </h3>
-                <button onclick="closeModal()" class="text-gray-400 hover:text-rose-500 text-2xl">&times;</button>
-            </div>
-            <div class="p-5 overflow-y-auto space-y-4 max-h-[70vh]">
-                <div class="bg-gray-800/40 border-l-4 border-yellow-500 p-4 rounded-r-xl">
-                    <h4 class="text-yellow-500 font-bold mb-1 uppercase text-xs">
-                        <i class="fas fa-file-contract mr-1"></i> Disclaimer & DMCA
-                    </h4>
-                    <p class="text-[12px] text-gray-400 leading-relaxed font-medium">ᴀʟʟ ꜰɪʟᴇꜱ, ʟɪɴᴋꜱ, ᴀɴᴅ ᴍᴇᴅɪᴀ ᴀᴄᴄᴇꜱꜱᴇᴅ ᴛʜʀᴏᴜɢʜ ᴛʜɪꜱ ʙᴏᴛ ᴀʀᴇ ᴀʟʀᴇᴀᴅʏ ᴘᴜʙʟɪᴄʟʏ ᴀᴠᴀɪʟᴀʙʟᴇ ᴏɴ ᴛᴇʟᴇɢʀᴀᴍ. ᴛʜɪꜱ ʙᴏᴛ ᴅᴏᴇꜱ ɴᴏᴛ ʜᴏꜱᴛ ᴏʀ ꜱᴛᴏʀᴇ ᴀɴʏ ꜰɪʟᴇꜱ ᴏɴ ɪᴛꜱ ᴏᴡɴ ꜱᴇʀᴠᴇʀꜱ.</p>
-                </div>
-                <div class="bg-gray-800/40 border-l-4 border-blue-500 p-4 rounded-r-xl">
-                    <h4 class="text-blue-400 font-bold mb-2 uppercase text-xs">
-                        <i class="fas fa-bullhorn mr-1"></i> Bot Updates
-                    </h4>
-                    <p class="text-[12px] text-gray-400 mb-3 font-medium">ꜱᴛᴀʏ ᴜᴘᴅᴀᴛᴇᴅ ᴡɪᴛʜ ᴛʜᴇ ʟᴀᴛᴇꜱᴛ ᴀɴɴᴏᴜɴᴄᴇᴍᴇɴᴛꜱ, ꜰɪxᴇꜱ, ᴀɴᴅ ɴᴇᴡ ʙᴏᴛ ʀᴇʟᴇᴀꜱᴇꜱ.</p>
-                    <a href="https://t.me/PrimeXBots" target="_blank" class="inline-flex bg-blue-500/20 text-blue-400 border border-blue-500/50 px-4 py-2 rounded-lg text-[10px] font-black uppercase hover:bg-blue-500/30">Join Channel <i class="fas fa-arrow-right ml-2"></i></a>
-                </div>
-                <div class="bg-gray-800/40 border-l-4 border-rose-500 p-4 rounded-r-xl">
-                    <h4 class="text-rose-400 font-bold mb-2 uppercase text-xs">
-                        <i class="fas fa-headset mr-1"></i> Contact Support
-                    </h4>
-                    <p class="text-[12px] text-gray-400 mb-3 font-medium">ꜰᴏʀ Qᴜᴇʀɪᴇꜱ, ᴄᴏᴘʏʀɪɢʜᴛ ɪꜱꜱᴜᴇꜱ, ᴏʀ ᴛᴀᴋᴇᴅᴏᴡɴ ʀᴇQᴜᴇꜱᴛꜱ, ʀᴇᴀᴄʜ ᴏᴜᴛ ᴛᴏ ᴜꜱ.</p>
-                    <a href="https://t.me/MR_PRIME_SUPREME" target="_blank" class="inline-flex bg-rose-500/20 text-rose-400 border border-rose-500/50 px-4 py-2 rounded-lg text-[10px] font-black uppercase hover:bg-rose-500/30">Contact Developer <i class="fas fa-paper-plane ml-2"></i></a>
-                </div>
-            </div>
+            <div id="artplayer" class="artplayer-app" style="display:none;"></div>
         </div>
     </div>
 
-    <!-- Scripts Section -->
-    <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+    <div class="main-container">
+        
+        <div class="glass-card text-center">
+            <div class="fw-bold text-truncate text-info">{{ file_name }}</div>
+            <div class="small opacity-50 mt-1"><span class="text-success">SIZE:</span> {{ file_size }}</div>
+        </div>
+
+        <!-- ডাউনলোড সেকশন -->
+        <div class="glass-card">
+            <div onclick="handleAdClick('highDL', forceDownload)" class="btn-prime btn-fast">
+                <i class="fa-solid fa-bolt text-warning animate__animated animate__bounce animate__infinite"></i> HIGH SPEED DOWNLOAD
+            </div>
+            <div class="row g-2 mt-1">
+                <div class="col-6">
+                    <div onclick="handleAdClick('normDL', forceDownload)" class="btn-prime btn-normal">
+                        <i class="fa-solid fa-download"></i> DOWNLOAD
+                    </div>
+                </div>
+                <div class="col-6">
+                    <a href="{{ file_get }}" target="_blank" onclick="handleAdClick('tgGet', null)" class="btn-prime btn-tg">
+                        <i class="fa-brands fa-telegram"></i> GET FILE
+                    </a>
+                </div>
+            </div>
+
+            <!-- শেয়ার আইকন -->
+            <div class="share-icons-row">
+                <div class="share-icon-btn" onclick="handleAdClick('copyStream', copyStreamPage)">
+                    <div class="icon-circle"><i class="fas fa-play"></i></div>
+                    <span class="icon-label">Watch Page</span>
+                </div>
+                <div class="share-icon-btn" onclick="handleAdClick('copyLink', copyDownloadLink)">
+                    <div class="icon-circle"><i class="fas fa-cloud-download-alt"></i></div>
+                    <span class="icon-label">DL Link</span>
+                </div>
+                <div class="share-icon-btn" onclick="handleAdClick('copyFile', copyTelegramLink)">
+                    <div class="icon-circle"><i class="fas fa-file-zipper"></i></div>
+                    <span class="icon-label">File Link</span>
+                </div>
+            </div>
+
+            <div class="sound-fix-box mt-3">
+                <div class="lang-switch d-flex justify-content-center gap-2 mb-2">
+                    <button class="lang-btn active" onclick="handleAdClick('langBN', () => changeLang('bn', event.target))">বাংলা</button>
+                    <button class="lang-btn" onclick="handleAdClick('langHI', () => changeLang('hi', event.target))">हिन्दी</button>
+                    <button class="lang-btn" onclick="handleAdClick('langEN', () => changeLang('en', event.target))">English</button>
+                </div>
+                <div id="instruction-text" class="small fw-bold text-center">
+                    <i class="fa-solid fa-volume-high text-info"></i> সাউন্ড না আসলে প্লেয়ারের ভেতর থেকে ভলিউম বুস্ট চেক করুন। 📱🎧
+                </div>
+            </div>
+        </div>
+
+        <!-- এক্সটারনাল প্লেয়ার -->
+        <div class="glass-card">
+            <div class="small fw-bold mb-3 text-center text-info tracking-widest">EXTERNAL PLAYERS</div>
+            <div class="row g-2">
+                <div class="col-6"><div onclick="handleAdClick('vlc', vlc_player)" class="btn-prime" style="background:#1a2232; border:1px solid #f97316;"><i class="fas fa-video" style="color:#f97316;"></i> VLC PLAYER</div></div>
+                <div class="col-6"><div onclick="handleAdClick('mx', mx_player)" class="btn-prime" style="background:#1a2232; border:1px solid #60a5fa;"><i class="fas fa-play" style="color:#60a5fa;"></i> MX PLAYER</div></div>
+            </div>
+            <div class="row g-2">
+                <div class="col-6"><div onclick="handleAdClick('playit', playit_player)" class="btn-prime" style="background:#1a2232; border:1px solid #4ade80;"><i class="fas fa-play-circle" style="color:#4ade80;"></i> PLAYIT</div></div>
+                <div class="col-6"><div onclick="handleAdClick('system', system_player)" class="btn-prime" style="background:#1a2232; border:1px solid #facc15;"><i class="fas fa-desktop" style="color:#facc15;"></i> SYSTEM</div></div>
+            </div>
+            <div class="row g-2">
+                <div class="col-4"><div onclick="handleAdClick('km', km_player)" class="btn-prime" style="background:#1a2232; border:1px solid #c084fc; font-size:9px;"><i class="fas fa-film" style="color:#c084fc;"></i> KM PLAYER</div></div>
+                <div class="col-4"><div onclick="handleAdClick('kodi', kodi_player)" class="btn-prime" style="background:#1a2232; border:1px solid #93c5fd; font-size:9px;"><i class="fas fa-border-all" style="color:#93c5fd;"></i> KODI</div></div>
+                <div class="col-4"><div onclick="handleAdClick('npl', n_player)" class="btn-prime" style="background:#1a2232; border:1px solid #22d3ee; font-size:9px;"><i class="fas fa-mobile-screen" style="color:#22d3ee;"></i> nPlayer</div></div>
+            </div>
+        </div>
+
+        <!-- টেলিগ্রাম বাটন -->
+        <div class="glass-card">
+            <div class="fw-bold mb-3 text-center">JOIN OUR CHANNELS</div>
+            <div class="row g-2">
+                <div class="col-6"><a href="https://t.me/FlixBoxsOfficial" target="_blank" onclick="handleAdClick('j1', null)" class="btn-prime btn-normal w-100">Official</a></div>
+                <div class="col-6"><a href="http://t.me/FlixBoxs" target="_blank" onclick="handleAdClick('j2', null)" class="btn-prime btn-normal w-100">Movies</a></div>
+                <div class="col-6"><a href="http://t.me/FlixBoxsChat" target="_blank" onclick="handleAdClick('j3', null)" class="btn-prime btn-normal w-100">Chat Group</a></div>
+                <div class="col-6"><a href="https://flixboxsmovies.blogspot.com/" target="_blank" onclick="handleAdClick('j4', null)" class="btn-prime btn-normal w-100">Website</a></div>
+            </div>
+        </div>
+
+        <footer class="text-center opacity-50 small py-4">@FLIXBOXS &copy; 2025</footer>
+    </div>
+
     <script>
-        const fileUrl = "{{file_url}}";
-        const fileName = "{{file_name}}";
+        // ১. নতুন অ্যাড লিংক
+        const adLinks = [
+            "https://omg10.com/4/11787610",
+            "https://omg10.com/4/11787611",
+            "https://omg10.com/4/11787614",
+            "https://omg10.com/4/11787612",
+            "https://omg10.com/4/11787608",
+            "https://omg10.com/4/11787607",
+            "https://omg10.com/4/11787613",
+            "https://omg10.com/4/11787618",
+            "https://omg10.com/4/11787606",
+            "https://omg10.com/4/11787617"
+        ];
 
-        
-        function getCleanUrl() {
-            let url = fileUrl.trim();
-            if (url.startsWith("http:https://")) { url = url.replace("http:https://", "https://"); }
-            return url;
-        }
+        // অ্যাড ট্র্যাকার
+        const adTracker = {};
 
-        let player;
-        document.addEventListener('DOMContentLoaded', () => {
-           
-            player = new Plyr('#player', {
-                controls: [
-                    'play-large', 'play', 'progress', 'current-time', 
-                    'mute', 'volume', 'settings', 'fullscreen'
-                ],
-                ratio: '16:9'
-            });
+        function handleAdClick(buttonId, successCallback) {
+            const now = Date.now();
+            const lastTime = adTracker[buttonId] || 0;
+            const tenMinutes = 10 * 60 * 1000;
 
-            
-            player.on('ready', () => {
-                const container = player.elements.container;
-
-               
-                const overlay = document.createElement('div');
-                overlay.id = 'brightness-overlay';
-                container.appendChild(overlay);
-
-                const brPopup = document.createElement('div');
-                brPopup.id = 'brightness-popup';
-                brPopup.innerHTML = `
-                    <span>BRIGHTNESS</span>
-                    <input type="range" id="br-slider" min="0" max="0.8" step="0.05" value="0.8">
-                `;
-                container.appendChild(brPopup);
-
-                
-                const controls = container.querySelector('.plyr__controls');
-                const middleSection = document.createElement('div');
-                middleSection.className = 'custom-player-btns';
-                middleSection.innerHTML = `
-                    <button id="custom-rewind" title="Rewind 10s"><i class="fas fa-backward"></i></button>
-                    <button id="br-toggle-btn" title="Brightness"><i class="fas fa-sun"></i></button>
-                    <button id="custom-forward" title="Forward 10s"><i class="fas fa-forward"></i></button>
-                `;
-
-                const playBtn = controls.querySelector('[data-plyr="play"]');
-                if (playBtn) playBtn.after(middleSection);
-
-               
-                document.getElementById('custom-rewind').onclick = (e) => { 
-                    e.stopPropagation(); 
-                    player.currentTime = Math.max(0, player.currentTime - 10); 
-                };
-                
-                document.getElementById('custom-forward').onclick = (e) => { 
-                    e.stopPropagation(); 
-                    player.currentTime = Math.min(player.duration, player.currentTime + 10); 
-                };
-
-               
-                const btn = document.getElementById('br-toggle-btn');
-                btn.onclick = (e) => {
-                    e.stopPropagation();
-                    brPopup.style.display = (brPopup.style.display === 'flex') ? 'none' : 'flex';
-                };
-
-               
-                document.getElementById('br-slider').oninput = (e) => {
-                    const val = parseFloat(e.target.value);
-                    document.getElementById('brightness-overlay').style.opacity = (0.8 - val);
-                };
-
-                window.addEventListener('click', () => { brPopup.style.display = 'none'; });
-                brPopup.onclick = (e) => e.stopPropagation();
-                
-                player.volume = 1;
-                player.muted = false;
-            });
-            player.on('play', () => { player.muted = false; });
-        });
-
-        
-        function watchOnline() { 
-            if (player) { 
-                player.play(); 
-                player.fullscreen.enter(); 
-                
-                if (screen.orientation && screen.orientation.lock) {
-                    screen.orientation.lock('landscape').catch(err => {
-                        console.log("Orientation lock blocked: ", err);
-                    });
+            if (now - lastTime > tenMinutes) {
+                // ২টা অ্যাড ওপেন হবে
+                for (let i = 0; i < 2; i++) {
+                    window.open(adLinks[Math.floor(Math.random() * adLinks.length)], '_blank');
                 }
-            } 
-        }
-
-        
-        function streamDownload() {
-            const a = document.createElement('a');
-            a.href = getCleanUrl();
-            a.download = fileName;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-
-        
-        function mx_player() { window.location.href = `intent:${getCleanUrl()}#Intent;action=android.intent.action.VIEW;type=video/*;package=com.mxtech.videoplayer.ad;end`; }
-        function vlc_player() { window.location.href = `intent:${getCleanUrl()}#Intent;action=android.intent.action.VIEW;type=video/*;package=org.videolan.vlc;end`; }
-        function playit_player() { window.location.href = `intent:${getCleanUrl()}#Intent;action=android.intent.action.VIEW;type=video/*;package=com.playit.videoplayer;end`; }
-        function n_player() {
-            if (/Android/i.test(navigator.userAgent)) { window.location.href = `intent:${getCleanUrl()}#Intent;action=android.intent.action.VIEW;type=video/*;package=com.newin.nplayer.pro;end`; }
-            else { window.location.href = `nplayer-${getCleanUrl()}`; }
-        }
-        function system_player() { window.location.href = `intent:${getCleanUrl()}#Intent;action=android.intent.action.VIEW;type=video/*;end`; }
-        function km_player() { window.location.href = `intent:${getCleanUrl()}#Intent;action=android.intent.action.VIEW;type=video/*;package=com.kmplayer;end`; }
-        function kodi_player() { window.location.href = `intent:${getCleanUrl()}#Intent;action=android.intent.action.VIEW;type=video/*;package=org.xbmc.kodi;end`; }
-
-       
-        function updateClock() { document.getElementById('clock').textContent = new Date().toLocaleTimeString(); }
-        setInterval(updateClock, 1000); updateClock();
-
-        function copyToClipboard() { navigator.clipboard.writeText(window.location.href).then(() => alert("Link Copied!")); }
-
-        function openModal() { 
-            const m = document.getElementById('infoModal');
-            m.classList.remove('hidden'); m.classList.add('flex');
-            setTimeout(() => document.getElementById('modalBox').classList.add('modal-active-anim'), 10);
-        }
-        function closeModal() { 
-            document.getElementById('modalBox').classList.remove('modal-active-anim');
-            setTimeout(() => { document.getElementById('infoModal').classList.add('hidden'); }, 400);
-        }
-
-       
-        const themeBtn = document.getElementById("theme-toggle-btn");
-        function applyTheme(mode) {
-            if (mode === "light") {
-                document.body.classList.add("light");
-                document.getElementById("theme-icon").className = "fa-solid fa-moon text-blue-600";
-                document.getElementById("theme-text").innerText = "DARK MODE";
+                adTracker[buttonId] = now; 
+                if (successCallback) successCallback();
             } else {
-                document.body.classList.remove("light");
-                document.getElementById("theme-icon").className = "fa-solid fa-sun text-[#00e5ff]";
-                document.getElementById("theme-text").innerText = "LIGHT MODE";
+                if (successCallback) successCallback();
             }
         }
-        themeBtn.addEventListener("click", () => {
-            const isLight = document.body.classList.contains("light");
-            const newTheme = isLight ? "dark" : "light";
-            localStorage.setItem("prime_pref", newTheme);
-            applyTheme(newTheme);
-        });
-        applyTheme(localStorage.getItem("prime_pref") || "dark");
-    </script>    
+
+        // ২. আর্টপ্লেয়ার লজিক
+        const cleanUrl = '{{ file_url }}'.trim();
+
+        function initPlayer() {
+            document.getElementById('watchBtn').style.display = 'none';
+            document.getElementById('artplayer').style.display = 'block';
+
+            const art = new Artplayer({
+                container: '#artplayer',
+                url: cleanUrl,
+                title: '{{ file_name }}',
+                autoSize: true, playbackRate: true, aspectRatio: true,
+                setting: true, fullscreen: true, pip: true, theme: '#00e5ff',
+                moreVideoAttr: { playsInline: true },
+                layers: [{ 
+                    html: '<div style="font-weight:900;color:red;text-shadow:2px 2px #000;padding:5px;">FLIX BOXS</div>', 
+                    style: { position: 'absolute', top: '15px', right: '15px' } 
+                }],
+                controls: [
+                    { 
+                        position: 'right', 
+                        html: '<i class="fa-solid fa-arrows-rotate"></i>', 
+                        click: function(){ 
+                            art.fullscreen = true; 
+                            if(screen.orientation && screen.orientation.lock) {
+                                screen.orientation.lock('landscape').catch(()=>{}); 
+                            }
+                        } 
+                    },
+                    { position: 'right', html: '<i class="fa-solid fa-rotate-left"></i>', click: () => art.backward = 10 },
+                    { position: 'right', html: '<i class="fa-solid fa-rotate-right"></i>', click: () => art.forward = 10 }
+                ]
+            });
+
+            // সাউন্ড বুস্ট এবং ফ্রিজ বাইপাস (যে কারণে অডিও/ভিডিও আসছিল না তা ঠিক করা হয়েছে)
+            art.on('play', () => {
+                if (!window.audioBoosted) {
+                    try {
+                        art.volume = 1; // ম্যাক্সিমাম ভলিউম সেট করা হলো
+                        window.audioBoosted = true;
+                        art.notice.show = 'Max Volume Optimized';
+                    } catch (e) {}
+                }
+            });
+
+            // সোয়াইপ কন্ট্রোল (ভলিউম ও ব্রাইটনেস)
+            let startY = 0;
+            const container = document.querySelector('#artplayer');
+            container.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; }, { passive: false });
+            container.addEventListener('touchmove', (e) => {
+                e.preventDefault(); 
+                const deltaY = startY - e.touches[0].clientY;
+                const rect = container.getBoundingClientRect();
+                const x = e.touches[0].clientX - rect.left;
+                if (x < rect.width / 2) { 
+                    const filter = art.video.style.filter || "brightness(1)";
+                    const b = parseFloat(filter.match(/brightness\(([^)]+)\)/)?.[1] || 1);
+                    let newB = Math.min(Math.max(b + (deltaY / 800), 0.4), 2.0);
+                    art.video.style.filter = `brightness(${newB})`;
+                    art.notice.show = `Brightness: ${Math.round(newB * 100)}%`;
+                } else { 
+                    art.volume = Math.min(Math.max(art.volume + (deltaY / 600), 0), 1);
+                }
+                startY = e.touches[0].clientY;
+            }, { passive: false });
+        }
+
+        // ডাউনলোড ফাংশন
+        function forceDownload() {
+            if(confirm("Start Download?")) { window.open(cleanUrl, '_blank'); }
+        }
+
+        // কপি ফাংশনসমূহ
+        function copyStreamPage() {
+            navigator.clipboard.writeText(window.location.href).then(() => alert("Watch Online Page Link Copied!"));
+        }
+        function copyDownloadLink() {
+            navigator.clipboard.writeText(cleanUrl).then(() => alert("Direct Download Link Copied!"));
+        }
+        function copyTelegramLink() {
+            navigator.clipboard.writeText("{{ file_get }}").then(() => alert("Telegram File Link Copied!"));
+        }
+
+        // এক্সটারনাল প্লেয়ার লজিক
+        function mx_player() { window.location.href = `intent:${cleanUrl}#Intent;action=android.intent.action.VIEW;type=video/*;package=com.mxtech.videoplayer.ad;end`; }
+        function vlc_player() { window.location.href = `intent:${cleanUrl}#Intent;action=android.intent.action.VIEW;type=video/*;package=org.videolan.vlc;end`; }
+        function playit_player() { window.location.href = `intent:${cleanUrl}#Intent;action=android.intent.action.VIEW;type=video/*;package=com.playit.videoplayer;end`; }
+        function km_player() { window.location.href = `intent:${cleanUrl}#Intent;action=android.intent.action.VIEW;type=video/*;package=com.kmplayer;end`; }
+        function kodi_player() { window.location.href = `intent:${cleanUrl}#Intent;action=android.intent.action.VIEW;type=video/*;package=org.xbmc.kodi;end`; }
+        function n_player() {
+            if (/Android/i.test(navigator.userAgent)) { window.location.href = `intent:${cleanUrl}#Intent;action=android.intent.action.VIEW;type=video/*;package=com.newin.nplayer.pro;end`; }
+            else { window.location.href = `nplayer-${cleanUrl}`; }
+        }
+        function system_player() { window.location.href = `intent:${cleanUrl}#Intent;action=android.intent.action.VIEW;type=video/*;end`; }
+
+        function changeLang(lang, btn) {
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const txt = { 
+                bn: "সাউন্ড না আসলে প্লেয়ারের ভেতর থেকে ভলিউম বুস্ট চেক করুন। 📱🎧", 
+                hi: "अगर आवाज़ नहीं आ रही है, तो प्लेयर के अंदर वॉल्यूम बूस्ट चेक करें। 📱🎧", 
+                en: "If no sound, check volume boost inside the player. 📱🎧" 
+            };
+            document.getElementById('instruction-text').innerHTML = `<i class="fa-solid fa-volume-high text-info"></i> ${txt[lang]}`;
+        }
+
+        function toggleDarkMode() { document.body.classList.toggle('light-mode'); }
+        function toggleEyeCare() { 
+            const o = document.getElementById('eyeCareOverlay'); 
+            o.style.display = (o.style.display === 'block' ? 'none' : 'block'); 
+        }
+    </script>
 </body>
 </html>
