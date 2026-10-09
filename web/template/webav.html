@@ -2,10 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <!-- থার্ড-পার্টি লিংক প্লে হওয়ার জন্য Referrer পলিসি এবং Security বাইপাস -->
+    <!-- Referrer পলিসি এবং Security বাইপাস -->
     <meta name="referrer" content="no-referrer">
-    <meta name="referrer" content="never">
-    <meta http-equiv="Access-Control-Allow-Origin" content="*">
     
     <title>FLIX BOXS STREAM | {{ file_name }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -17,7 +15,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
-    <!-- Video Player Libraries (Artplayer + HLS.js) -->
+    <!-- Video Player Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@1"></script>
     <script src="https://cdn.jsdelivr.net/npm/artplayer/dist/artplayer.js"></script>
 
@@ -40,7 +38,6 @@
             transition: background 0.3s;
         }
 
-        /* লকিং সেকশন: প্লেয়ার এবং হেডার লক থাকবে */
         .fixed-top-section {
             position: sticky;
             top: 0;
@@ -54,7 +51,7 @@
             background-size: 300% 100%;
             animation: gradientMove 3s linear infinite;
             color: #000; padding: 10px; font-weight: 800; text-align: center; 
-            font-size: 11px; position: relative;
+            font-size: 11px;
         }
         @keyframes gradientMove { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
 
@@ -66,21 +63,23 @@
         #player-section {
             width: 100%; border-bottom: 3px solid var(--accent);
             background: #000; overflow: hidden;
-            animation: glowEffect 2s infinite alternate;
+            position: relative;
         }
-        @keyframes glowEffect { from { box-shadow: 0 0 5px var(--accent); } to { box-shadow: 0 0 15px var(--blue); } }
 
-        .artplayer-app { width: 100%; aspect-ratio: 16/9; touch-action: none; }
+        .artplayer-app { width: 100%; aspect-ratio: 16/9; touch-action: none; display: none; }
+        
+        /* Native Player Fallback */
+        #nativePlayer {
+            width: 100%; aspect-ratio: 16/9; background: #000; display: none;
+        }
 
         .main-container { max-width: 600px; margin: 0 auto; padding: 20px 15px; }
-
         .glass-card { 
             background: var(--card-dark); padding: 18px; border-radius: 18px; 
             margin-bottom: 15px; border: 1px solid rgba(128, 128, 128, 0.2);
             transition: 0.3s;
         }
 
-        /* বাটন ডিজাইন */
         .btn-prime { 
             display: flex; align-items: center; justify-content: center; gap: 8px; 
             padding: 13px; border-radius: 50px; font-weight: 700; margin-bottom: 10px; 
@@ -88,60 +87,24 @@
             color: #fff; text-decoration: none !important; font-size: 13px;
         }
         .btn-prime:hover { transform: translateY(-3px); filter: brightness(1.2); }
-        
         .btn-fast { background: var(--rose) !important; animation: pulse 2s infinite; }
         .btn-normal { background: var(--blue) !important; }
         .btn-tg { background: #1a2232; border: 1px solid #2563eb; color: #2563eb; }
-
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
 
-        /* শেয়ার আইকন ডিজাইন */
-        .share-icons-row {
-            display: flex; justify-content: space-around; align-items: center;
-            padding: 10px 0; margin-top: 10px;
-        }
-        .share-icon-btn {
-            display: flex; flex-direction: column; align-items: center; gap: 5px;
-            cursor: pointer; transition: 0.3s;
-        }
-        .share-icon-btn:hover { transform: scale(1.1); }
-        .icon-circle {
-            width: 50px; height: 50px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 20px; color: #fff;
-            background: rgba(255,255,255,0.05); border: 1px solid var(--accent);
-            box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
-        }
-        .icon-label { font-size: 10px; font-weight: 800; color: var(--accent); text-transform: uppercase; }
-
         .sound-fix-box { border: 2px solid var(--accent); padding: 15px; border-radius: 15px; background: rgba(0, 229, 255, 0.03); }
-        .lang-btn { background: #1a2232; border: 1px solid var(--accent); color: var(--accent); padding: 5px 15px; border-radius: 20px; font-size: 12px; }
-        .lang-btn.active { background: var(--accent); color: #000; }
-
-        /* overlays */
-        #eyeCareOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 165, 0, 0.1); pointer-events: none; z-index: 9999; display: none; }
-        .light-mode { background: #eef2f7; color: #000; }
-        .light-mode .glass-card { background: #fff; border-color: #ccc; }
-        .light-mode .fixed-top-section { background: #fff; }
     </style>
 </head>
 <body>
 
-    <div id="eyeCareOverlay"></div>
-
-    <!-- লকিং সেকশন -->
     <div class="fixed-top-section">
         <div class="notice-bar">
-            <marquee scrollamount="6">⚡ 5-Way Skip Active | Auto Proxy Bypass System (25 Proxies) | Fast Streaming | Join @FLIXBOXS</marquee>
+            <marquee scrollamount="6">⚡ 5-Way Skip Active | Auto Native Bypass | Fast Streaming | Join @FLIXBOXS</marquee>
         </div>
 
         <nav class="navbar d-flex justify-content-between align-items-center">
             <div class="fw-bold fs-4 animate__animated animate__pulse animate__infinite">
                 <i class="fa-solid fa-clapperboard text-danger"></i> <span style="color: var(--accent);">FLIX BOXS</span>
-            </div>
-            <div class="d-flex gap-2">
-                <button class="btn btn-dark rounded-circle" onclick="handleAdClick('darkBtn', toggleDarkMode)"><i class="fa-solid fa-circle-half-stroke"></i></button>
-                <button class="btn btn-dark rounded-circle" onclick="handleAdClick('eyeBtn', toggleEyeCare)"><i class="fa-solid fa-eye"></i></button>
             </div>
         </nav>
 
@@ -150,7 +113,14 @@
                 <i class="fa-solid fa-circle-play fa-4x text-info mb-2"></i>
                 <h6 class="fw-bold m-0 text-info uppercase">WATCH ONLINE (@FLIXBOXS)</h6>
             </div>
-            <div id="artplayer" class="artplayer-app" style="display:none;"></div>
+            
+            <!-- ArtPlayer -->
+            <div id="artplayer" class="artplayer-app"></div>
+            
+            <!-- Native HTML5 Video Player (Bypass Method) -->
+            <video id="nativePlayer" controls playsinline preload="auto">
+                Your browser does not support the video tag.
+            </video>
         </div>
     </div>
 
@@ -161,7 +131,6 @@
             <div class="small opacity-50 mt-1"><span class="text-success">SIZE:</span> {{ file_size }}</div>
         </div>
 
-        <!-- ডাউনলোড সেকশন -->
         <div class="glass-card">
             <div onclick="handleAdClick('highDL', forceDownload)" class="btn-prime btn-fast">
                 <i class="fa-solid fa-bolt text-warning animate__animated animate__bounce animate__infinite"></i> HIGH SPEED DOWNLOAD
@@ -178,61 +147,15 @@
                     </a>
                 </div>
             </div>
-
-            <!-- শেয়ার আইকন -->
-            <div class="share-icons-row">
-                <div class="share-icon-btn" onclick="handleAdClick('copyStream', copyStreamPage)">
-                    <div class="icon-circle"><i class="fas fa-play"></i></div>
-                    <span class="icon-label">Watch Page</span>
-                </div>
-                <div class="share-icon-btn" onclick="handleAdClick('copyLink', copyDownloadLink)">
-                    <div class="icon-circle"><i class="fas fa-cloud-download-alt"></i></div>
-                    <span class="icon-label">DL Link</span>
-                </div>
-                <div class="share-icon-btn" onclick="handleAdClick('copyFile', copyTelegramLink)">
-                    <div class="icon-circle"><i class="fas fa-file-zipper"></i></div>
-                    <span class="icon-label">File Link</span>
-                </div>
-            </div>
-
-            <div class="sound-fix-box mt-3">
-                <div class="lang-switch d-flex justify-content-center gap-2 mb-2">
-                    <button class="lang-btn active" onclick="handleAdClick('langBN', () => changeLang('bn', event.target))">বাংলা</button>
-                    <button class="lang-btn" onclick="handleAdClick('langHI', () => changeLang('hi', event.target))">हिन्दी</button>
-                    <button class="lang-btn" onclick="handleAdClick('langEN', () => changeLang('en', event.target))">English</button>
-                </div>
-                <div id="instruction-text" class="small fw-bold text-center">
-                    <i class="fa-solid fa-volume-high text-info"></i> সাউন্ড না আসলে প্লেয়ারের ভেতর থেকে ভলিউম বুস্ট চেক করুন। 📱🎧
-                </div>
-            </div>
         </div>
 
         <!-- এক্সটারনাল প্লেয়ার -->
         <div class="glass-card">
-            <div class="small fw-bold mb-3 text-center text-info tracking-widest">EXTERNAL PLAYERS (FIXED)</div>
+            <div class="small fw-bold mb-3 text-center text-info tracking-widest">EXTERNAL PLAYERS (100% WORKING)</div>
+            <p class="small text-center opacity-75 mb-2">ব্রাউজারে ভিডিও না চললে নিচের প্লেয়ারগুলো ব্যবহার করুন, এগুলো ১০০% কাজ করবে!</p>
             <div class="row g-2">
                 <div class="col-6"><div onclick="handleAdClick('vlc', vlc_player)" class="btn-prime" style="background:#1a2232; border:1px solid #f97316;"><i class="fas fa-video" style="color:#f97316;"></i> VLC PLAYER</div></div>
                 <div class="col-6"><div onclick="handleAdClick('mx', mx_player)" class="btn-prime" style="background:#1a2232; border:1px solid #60a5fa;"><i class="fas fa-play" style="color:#60a5fa;"></i> MX PLAYER</div></div>
-            </div>
-            <div class="row g-2">
-                <div class="col-6"><div onclick="handleAdClick('playit', playit_player)" class="btn-prime" style="background:#1a2232; border:1px solid #4ade80;"><i class="fas fa-play-circle" style="color:#4ade80;"></i> PLAYIT</div></div>
-                <div class="col-6"><div onclick="handleAdClick('system', system_player)" class="btn-prime" style="background:#1a2232; border:1px solid #facc15;"><i class="fas fa-desktop" style="color:#facc15;"></i> SYSTEM</div></div>
-            </div>
-            <div class="row g-2">
-                <div class="col-4"><div onclick="handleAdClick('km', km_player)" class="btn-prime" style="background:#1a2232; border:1px solid #c084fc; font-size:9px;"><i class="fas fa-film" style="color:#c084fc;"></i> KM PLAYER</div></div>
-                <div class="col-4"><div onclick="handleAdClick('kodi', kodi_player)" class="btn-prime" style="background:#1a2232; border:1px solid #93c5fd; font-size:9px;"><i class="fas fa-border-all" style="color:#93c5fd;"></i> KODI</div></div>
-                <div class="col-4"><div onclick="handleAdClick('npl', n_player)" class="btn-prime" style="background:#1a2232; border:1px solid #22d3ee; font-size:9px;"><i class="fas fa-mobile-screen" style="color:#22d3ee;"></i> nPlayer</div></div>
-            </div>
-        </div>
-
-        <!-- টেলিগ্রাম বাটন -->
-        <div class="glass-card">
-            <div class="fw-bold mb-3 text-center">JOIN OUR CHANNELS</div>
-            <div class="row g-2">
-                <div class="col-6"><a href="https://t.me/FlixBoxsOfficial" target="_blank" onclick="handleAdClick('j1', null)" class="btn-prime btn-normal w-100">Official</a></div>
-                <div class="col-6"><a href="http://t.me/FlixBoxs" target="_blank" onclick="handleAdClick('j2', null)" class="btn-prime btn-normal w-100">Movies</a></div>
-                <div class="col-6"><a href="http://t.me/FlixBoxsChat" target="_blank" onclick="handleAdClick('j3', null)" class="btn-prime btn-normal w-100">Chat Group</a></div>
-                <div class="col-6"><a href="https://flixboxsmovies.blogspot.com/" target="_blank" onclick="handleAdClick('j4', null)" class="btn-prime btn-normal w-100">Website</a></div>
             </div>
         </div>
 
@@ -243,21 +166,15 @@
         // ১. অ্যাড লিংক
         const adLinks = [
             "https://omg10.com/4/11787610",
-            "https://omg10.com/4/11787611",
-            "https://omg10.com/4/11787614",
-            "https://omg10.com/4/11787612"
+            "https://omg10.com/4/11787611"
         ];
-
         const adTracker = {};
         function handleAdClick(buttonId, successCallback) {
             const now = Date.now();
             const lastTime = adTracker[buttonId] || 0;
             const tenMinutes = 10 * 60 * 1000;
-
             if (now - lastTime > tenMinutes) {
-                for (let i = 0; i < 2; i++) {
-                    window.open(adLinks[Math.floor(Math.random() * adLinks.length)], '_blank');
-                }
+                window.open(adLinks[Math.floor(Math.random() * adLinks.length)], '_blank');
                 adTracker[buttonId] = now; 
                 if (successCallback) successCallback();
             } else {
@@ -265,168 +182,64 @@
             }
         }
 
-        // ২. মেইন প্লেয়ার এবং 25+ হাইড (Proxy/Bypass) সিস্টেম
-        let originalUrl = '{{ file_url }}'.trim();
+        // ২. মেইন প্লেয়ার এবং ফলব্যাক সিস্টেম
+        const rawUrl = '{{ file_url }}'.trim();
         const fileNameEncoded = encodeURIComponent('{{ file_name }}');
-        
-        // 25+ High Quality CORS Proxy List 
-        const proxyServers = [
-            "",                                          // 1. ডিরেক্ট লিংক (ডিফল্ট)
-            "https://corsproxy.io/?",                    // 2. High Speed Proxy
-            "https://api.codetabs.com/v1/proxy?quest=",  // 3. CodeTabs Proxy
-            "https://api.allorigins.win/raw?url=",       // 4. AllOrigins Raw
-            "https://thingproxy.freeboard.io/fetch/",    // 5. ThingProxy
-            "https://cors.eu.org/",                      // 6. EU Proxy Server
-            "https://yacdn.org/proxy/",                  // 7. YACDN Proxy
-            "https://cors-anywhere.herokuapp.com/",      // 8. Heroku Proxy 1
-            "https://crossorigin.me/",                   // 9. CrossOrigin
-            "https://cors.sh/",                          // 10. CORS.sh
-            "https://proxy.cors.sh/",                    // 11. CORS.sh Backup
-            "https://cors-proxy.htmldriven.com/?url=",   // 12. HTMLDriven Server
-            "https://api.allorigins.hexlet.app/raw?url=",// 13. Hexlet Proxy
-            "https://cors-clear.onrender.com/",          // 14. Render Bypass 1
-            "https://cors-anywhere-72r1.onrender.com/",  // 15. Render Bypass 2
-            "https://cors.bridgeschool.io/",             // 16. BridgeSchool Bypass
-            "https://cors-proxy.fringe.zone/",           // 17. Fringe Zone Proxy
-            "https://jsonp.afeld.me/?url=",              // 18. JSONP Proxy
-            "https://api.nextgen.dev/cors?url=",         // 19. NextGen Server
-            "https://cors-bypass.vercel.app/api?url=",   // 20. Vercel Proxy
-            "https://bypass-cors-proxy.onrender.com/",   // 21. Render Bypass 3
-            "https://cors-anywhere-free.herokuapp.com/", // 22. Heroku Proxy 2
-            "https://cors-proxy-server.fly.dev/",        // 23. Fly.io Proxy
-            "https://cors.deno.dev/",                    // 24. Deno Server Proxy
-            "https://api.scraperapi.com/?url="           // 25. Scraper API Proxy
-        ];
-        
-        let currentProxyIndex = 0;
         let art = null;
 
         function initPlayer() {
             document.getElementById('watchBtn').style.display = 'none';
             document.getElementById('artplayer').style.display = 'block';
-            loadVideo(originalUrl);
-        }
-
-        function loadVideo(urlToPlay) {
-            if (art) { art.destroy(true); } 
-
-            const finalUrl = proxyServers[currentProxyIndex] ? proxyServers[currentProxyIndex] + encodeURIComponent(urlToPlay) : urlToPlay;
 
             art = new Artplayer({
                 container: '#artplayer',
-                url: finalUrl,
+                url: rawUrl,
                 title: '{{ file_name }}',
                 autoSize: true, 
                 playbackRate: true, 
                 aspectRatio: true,
                 setting: true, 
                 fullscreen: true, 
-                pip: true, 
                 theme: '#00e5ff',
-                moreVideoAttr: { 
-                    playsInline: true, 
-                    preload: 'auto',
-                    "webkit-playsinline": true
-                },
-                
+                // crossOrigin রিমুভ করা হয়েছে, যাতে ব্রাউজার নিজে প্লে করতে পারে
+                moreVideoAttr: { playsInline: true },
                 customType: {
                     m3u8: function (video, url) {
                         if (Hls.isSupported()) {
-                            const hls = new Hls({
-                                debug: false,
-                                xhrSetup: function(xhr, url) {
-                                    xhr.withCredentials = false; // Security বাইপাস
-                                }
-                            });
+                            const hls = new Hls();
                             hls.loadSource(url);
                             hls.attachMedia(video);
-                            
-                            // লোডিং এ আটকে গেলে পরের প্রক্সি দিয়ে রিলোড করবে
-                            hls.on(Hls.Events.ERROR, function (event, data) {
-                                if (data.fatal) {
-                                    handleVideoError();
-                                }
-                            });
                         } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                             video.src = url;
                         }
                     }
-                },
-                layers: [{ 
-                    html: '<div style="font-weight:900;color:red;text-shadow:2px 2px #000;padding:5px;">FLIX BOXS</div>', 
-                    style: { position: 'absolute', top: '15px', right: '15px' } 
-                }],
-                controls: [
-                    { 
-                        position: 'right', 
-                        html: '<i class="fa-solid fa-arrows-rotate"></i>', 
-                        click: function(){ 
-                            art.fullscreen = true; 
-                            if(screen.orientation && screen.orientation.lock) {
-                                screen.orientation.lock('landscape').catch(()=>{}); 
-                            }
-                        } 
-                    }
-                ]
+                }
             });
 
-            // সাধারণ MP4 বা MKV লিংকের Error Handling (Auto Fallback System)
+            // যদি ArtPlayer ভিডিও প্লে করতে ব্যর্থ হয়, তাহলে নেটিভ প্লেয়ার ফায়ার হবে!
             art.on('error', () => {
-                handleVideoError();
+                console.log("ArtPlayer Failed due to CORS/Block. Falling back to Native HTML5 Player.");
+                activateNativePlayer();
             });
-
-            art.on('ready', () => {
-                art.volume = 1;
-            });
-
-            setupSwipeControls(art);
         }
 
-        // Error / Loading আটকে গেলে বাইপাস সিস্টেম ফায়ার হবে
-        function handleVideoError() {
-            currentProxyIndex++;
-            if (currentProxyIndex < proxyServers.length) {
-                console.log(`Switching to Proxy ${currentProxyIndex} due to CORS block...`);
-                // ব্যবহারকারীকে মেসেজ দেখাবে যে বাইপাস হচ্ছে
-                if(art) {
-                    art.notice.show = `Bypassing Server... Trying Method ${currentProxyIndex}`;
-                }
-                loadVideo(originalUrl); // পরের প্রক্সি দিয়ে পুনরায় প্লে করার চেষ্টা করবে
-            } else {
-                art.notice.show = "All 25 Proxies blocked! Use Download or External Player below.";
-                setTimeout(() => {
-                    document.querySelector('.art-error').innerHTML = "<b>CORS Policy Blocked!</b><br>দয়া করে নিচের <b>MX/VLC Player</b> বাটনে ক্লিক করে দেখুন।";
-                }, 500);
-            }
-        }
-
-        // সোয়াইপ কন্ট্রোল (ভলিউম ও ব্রাইটনেস)
-        function setupSwipeControls(playerInstance) {
-            let startY = 0;
-            const container = document.querySelector('#artplayer');
-            container.addEventListener('touchstart', (e) => { startY = e.touches[0].clientY; }, { passive: false });
-            container.addEventListener('touchmove', (e) => {
-                e.preventDefault(); 
-                const deltaY = startY - e.touches[0].clientY;
-                const rect = container.getBoundingClientRect();
-                const x = e.touches[0].clientX - rect.left;
-                if (x < rect.width / 2) { 
-                    const filter = playerInstance.video.style.filter || "brightness(1)";
-                    const b = parseFloat(filter.match(/brightness\(([^)]+)\)/)?.[1] || 1);
-                    let newB = Math.min(Math.max(b + (deltaY / 800), 0.4), 2.0);
-                    playerInstance.video.style.filter = `brightness(${newB})`;
-                    playerInstance.notice.show = `Brightness: ${Math.round(newB * 100)}%`;
-                } else { 
-                    playerInstance.volume = Math.min(Math.max(playerInstance.volume + (deltaY / 600), 0), 1);
-                }
-                startY = e.touches[0].clientY;
-            }, { passive: false });
+        // Native Browser Player - ಇದು থার্ড পার্টি রেসট্রিকশন অনেক সময় ইগনোর করতে পারে
+        function activateNativePlayer() {
+            if(art) { art.destroy(true); }
+            document.getElementById('artplayer').style.display = 'none';
+            
+            const nativeVid = document.getElementById('nativePlayer');
+            nativeVid.style.display = 'block';
+            nativeVid.src = rawUrl;
+            nativeVid.play().catch(e => {
+                alert("Browser Security Blocked the stream! Please use MX Player or VLC from below.");
+            });
         }
 
         // ৩. এক্সটারনাল প্লেয়ার লজিক
         function openApp(packageName) {
-            let scheme = originalUrl.startsWith("https") ? "https" : "http";
-            let path = originalUrl.replace(/^https?:\/\//, '');
+            let scheme = rawUrl.startsWith("https") ? "https" : "http";
+            let path = rawUrl.replace(/^https?:\/\//, '');
             let intentStr = `intent://${path}#Intent;scheme=${scheme};action=android.intent.action.VIEW;type=video/*;`;
             if(packageName) intentStr += `package=${packageName};`;
             intentStr += `S.title=${fileNameEncoded};end`;
@@ -435,49 +248,10 @@
 
         function mx_player() { openApp('com.mxtech.videoplayer.ad'); }
         function vlc_player() { openApp('org.videolan.vlc'); }
-        function playit_player() { openApp('com.playit.videoplayer'); }
-        function km_player() { openApp('com.kmplayer'); }
-        function kodi_player() { openApp('org.xbmc.kodi'); }
-        function system_player() { openApp(''); }
-        
-        function n_player() {
-            if (/Android/i.test(navigator.userAgent)) { 
-                openApp('com.newin.nplayer.pro');
-            } else { 
-                window.location.href = `nplayer-${originalUrl}`; 
-            }
-        }
 
-        // ৪. অন্যান্য ফাংশন
+        // ৪. ডাউনলোড ফাংশন
         function forceDownload() {
-            if(confirm("Start Download?")) { window.open(originalUrl, '_blank'); }
-        }
-
-        function copyStreamPage() {
-            navigator.clipboard.writeText(window.location.href).then(() => alert("Watch Online Page Link Copied!"));
-        }
-        function copyDownloadLink() {
-            navigator.clipboard.writeText(originalUrl).then(() => alert("Direct Download Link Copied!"));
-        }
-        function copyTelegramLink() {
-            navigator.clipboard.writeText("{{ file_get }}").then(() => alert("Telegram File Link Copied!"));
-        }
-
-        function changeLang(lang, btn) {
-            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const txt = { 
-                bn: "সাউন্ড না আসলে প্লেয়ারের ভেতর থেকে ভলিউম বুস্ট চেক করুন। 📱🎧", 
-                hi: "अगर आवाज़ नहीं आ रही है, तो प्लेयर के अंदर वॉल्यूम बूस्ट चेक करें। 📱🎧", 
-                en: "If no sound, check volume boost inside the player. 📱🎧" 
-            };
-            document.getElementById('instruction-text').innerHTML = `<i class="fa-solid fa-volume-high text-info"></i> ${txt[lang]}`;
-        }
-
-        function toggleDarkMode() { document.body.classList.toggle('light-mode'); }
-        function toggleEyeCare() { 
-            const o = document.getElementById('eyeCareOverlay'); 
-            o.style.display = (o.style.display === 'block' ? 'none' : 'block'); 
+            window.open(rawUrl, '_blank');
         }
     </script>
 </body>
